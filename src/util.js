@@ -25,3 +25,22 @@ export function isBigScreen() {
 export function last(path) {
     return '/' + (path.split('/').pop() || '');
 }
+
+export class Cache {
+    _i;
+    constructor() {
+        this._i = {};
+    }
+    has(id) {
+        return id in this._i;
+    }
+    get(id) {
+        return this._i[id];
+    }
+    set(id, data) {
+        return this._i[id] = data;
+    }
+    clear() {
+        this._i = {};
+    }
+}

@@ -1,6 +1,10 @@
-import { router } from '../states';
+/** @typedef {import('@9elt/miniframe').MiniframeElement} Melement */
+
 import { State } from '@9elt/miniframe';
 import { wfb, join } from '../util';
+import { LinkIcon } from './icons';
+
+export * from './common';
 
 export const Toggler = (open) => ({
     tagName: 'div',
@@ -264,6 +268,7 @@ export const Similarity = (similarity) => ({
 export const TitleSimilarity = (similarity) => ({
     tagName: 'span',
     className: 'lighter',
+    style: { textTransform: 'none' },
     children: [
         ' (',
         similarity,
@@ -279,33 +284,12 @@ export const Year = (date) => ({
     children: [' (', new Date(date).getFullYear(), ')']
 });
 
-export const LinkIcon = {
-    className: 'transparent',
-    tagName: 'small',
-    children: ['🡵']
-};
-
 export const ListLink = (user) => ({
     tagName: 'a',
     href: 'https://myanimelist.net/profile/' + user,
     target: '_blank',
     children: [user, ' list ', LinkIcon],
 });
-
-export const Link = (href, ...children) => /^\//.test(href) ? {
-    tagName: 'a',
-    href,
-    onclick: (e) => {
-        e.preventDefault();
-        router.value = href;
-    },
-    children
-} : {
-    tagName: 'a',
-    href,
-    target: '_blank',
-    children
-};
 
 const USERPH = {
     username: '-',

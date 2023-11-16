@@ -6,4 +6,21 @@ export const router = State.from(null);
 
 export const root = State.from(document.querySelector('#root').childNodes);
 
-export const user = State.from('_nelt');
+/** 
+ * @type {State<{
+ *     username: string;
+ *     saved: { id: number; }[]; 
+ * } | null | -1> 
+ * & {
+ *     login: (username: string) => Promise<void>;
+ *     logout: () => void;
+ *     save: (data: any) => void;
+ *     unsave: (id) => void;
+ * }}
+ * 
+ * -1    = session loading
+ * null  = no session
+ * {...} = valid session
+ * 
+ */
+export const user = State.from(-1);

@@ -4,13 +4,16 @@ import rekoAPI from '../api';
 import { isBigScreen, scrollup } from '../util';
 import { Pagination, Toggler, Sidebar, Content } from '../ui';
 
-export default async function Recommendations() {
-    if (user.value === null) {
-        throw 'user not logged';
-    }
-
+export default function Recommendations() {
     const USER = user.value;
 
+    return USER ? USER === -1
+        ? [{ tagName: 'p', children: ['loading goes here'] }]
+        : Recos(USER.username)
+        : [{ tagName: 'p', children: ['login form goes here'] }];
+}
+
+function Recos(USER) {
     const usersPage = State.from(1);
     const usersPagination = State.from({ current: 1, next: 2, previous: null });
 

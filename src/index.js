@@ -1,7 +1,18 @@
-import { root, router } from "./states";
+import { root, router, user } from "./states";
 import { createNode } from "@9elt/miniframe";
 import { last } from "./util";
+import "./session";
 import "./router";
+import { Header } from "./ui/header";
+
+document
+    .querySelector('header')
+    .replaceWith(
+        createNode(Header(
+            document.querySelector('header').querySelector('a'),
+            user
+        ))
+    );
 
 document
     .querySelector('.main')
@@ -18,3 +29,5 @@ document
         event.preventDefault();
         router.value = last(a.href);
     });
+
+router.value = router.value;
