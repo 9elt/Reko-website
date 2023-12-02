@@ -1,11 +1,11 @@
-import { api } from "./states";
 import { Cache } from "./util";
 
-const REKO = 'http://127.0.0.1:3000';
+// const REKO = 'http://127.0.0.1:3000';
+const REKO = 'https://api.reko.moe';
 
 export const API_CACHE = new Cache();
 
-export default async function rekoAPI(url) {
+export async function reko(url) {
     try {
         if (API_CACHE.has(url))
             return API_CACHE.get(url);
@@ -21,10 +21,3 @@ export default async function rekoAPI(url) {
         throw err;
     }
 }
-
-rekoAPI('/version').then(version => {
-    document.querySelector('#version').textContent = version;
-    api.value = { isOk: true, version };
-}).catch(() => {
-    api.value = { isOk: false, version: '0.0.0' };
-});

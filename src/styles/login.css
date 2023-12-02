@@ -1,0 +1,74 @@
+.login-container {
+    margin-block: 64px !important;
+}
+
+.login-container h2 {
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.login {
+    background-color: rgba(8, 16, 24, 0.529);
+    padding: 32px;
+    padding-top: 18px;
+    border-radius: 4px;
+}
+
+.login {
+    display: block;
+    color: #eee;
+}
+
+.login.error label {
+    color: #ff5d5d;
+}
+
+.login label {
+    font-size: 18px;
+}
+
+.login .winput>input {
+    width: 100%;
+    background: none;
+    color: #eee;
+    border: 2px solid #eeea;
+    border-radius: 4px;
+    outline: none;
+    font-size: 22px;
+    padding: 4px;
+    z-index: 1;
+    position: relative;
+}
+
+.login.error .winput>input {
+    border: 2px solid #ff5d5daa;
+}
+
+.login .winput {
+    position: relative;
+}
+
+.login.wloading .winput::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    margin: 4px;
+    border-radius: 2px;
+    box-sizing: border-box;
+    width: 0;
+    height: calc(100% - 8px);
+    pointer-events: none;
+    background-color: #133a64;
+    animation: Connect 1.5s ease-in forwards;
+}
+
+@keyframes Connect {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: calc(100% - 8px);
+    }
+}

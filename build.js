@@ -1,48 +1,86 @@
-import { readdir } from 'node:fs/promises';
-import { createNode } from '@9elt/miniframe';
-import { JSDOM } from 'jsdom';
+/*
 
+config
+
+*/
+
+const MINIFY = true;
+const ENTRYPOINT = './src/index.js';
 const PAGES_DIR = './src/pages';
+const STYLES_DIR = './src/styles';
 const OUTPUT_DIR = './dist';
+const HTML_TEMPLATE = './template.html';
 
-const BASE_HTML = await Bun.file('./src/template.html').text();
+/*
 
-const result = await Bun.build({
-    entrypoints: ['./src/index.js'],
+build
+
+*/
+import { createNode } from '@9elt/miniframe';
+import { readdir } from 'node:fs/promises';
+import { JSDOM } from 'jsdom';
+import CleanCSS from 'clean-css';
+import { metadata } from './src/metadata';
+
+const build = await Bun.build({
+    entrypoints: [ENTRYPOINT],
     outdir: OUTPUT_DIR,
-    minify: false,
+    minify: MINIFY,
 });
 
-if (!result) {
-    console.log('build failed', result);
+if (!build.success) {
+    console.log('build failed', build);
     process.exit(1);
+}
+
+let html;
+try {
+    html = await Bun.file(HTML_TEMPLATE).text();
+}
+catch (error) {
+    console.log('html template not found', error);
 }
 
 for (const name of await readdir(PAGES_DIR))
     try {
-        await SSR(name);
+        global.window = new JSDOM(html).window;
+        global.document = window.document;
+
+        const { default: page } = await import(PAGES_DIR + '/' + name);
+
+        document.querySelector('#root').replaceWith(
+            createNode({
+                tagName: 'div',
+                className: 'main',
+                id: 'root',
+                children: await page(),
+            })
+        );
+
+        metadata(page.metadata);
+
+        Bun.write(
+            OUTPUT_DIR + '/' + name.replace('js', 'html'),
+            document.documentElement.innerHTML
+        );
     }
     catch (error) {
-        console.log('ssr error', name, error);
+        console.log('SSR error', name, error);
     }
 
-async function SSR(name) {
-    global.window = new JSDOM(BASE_HTML).window;
-    global.document = window.document;
+let css = '';
+for (const name of await readdir(STYLES_DIR))
+    try {
+        css += await Bun.file(STYLES_DIR + '/' + name).text();
+    }
+    catch (error) {
+        console.log('CSS error', name, error);
+    }
 
-    const { default: page } = await import(PAGES_DIR + '/' + name);
+if (MINIFY)
+    css = new CleanCSS().minify(css).styles;
 
-    document.querySelector('.main').replaceWith(
-        createNode({
-            tagName: 'div',
-            className: 'main',
-            id: 'root',
-            children: await page(),
-        })
-    );
-
-    Bun.write(
-        OUTPUT_DIR + '/' + name.replace('js', 'html'),
-        document.documentElement.innerHTML
-    );
-}
+Bun.write(
+    OUTPUT_DIR + '/index.css',
+    css
+);

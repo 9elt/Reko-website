@@ -1,0 +1,39 @@
+body.debug>div {
+    outline: 1px solid #f00;
+}
+
+body.debug>*>div {
+    outline: 1px solid #fa0;
+}
+
+body.debug>*>*>div {
+    outline: 1px solid #0f0;
+}
+
+body.debug>*>*>*>div {
+    outline: 1px solid #0af;
+}
+
+body.debug>*>*>*>*>div {
+    outline: 1px solid #d0f;
+}
+
+body.debug>*>*>*>*>*>div {
+    outline: 1px solid #f00;
+}
+
+body.debug>*>*>*>*>*>*>div {
+    outline: 1px solid #fa0;
+}
+
+body.debug>*>*>*>*>*>*>*>div {
+    outline: 1px solid #0f0;
+}
+
+body.debug>*>*>*>*>*>*>*>*>div {
+    outline: 1px solid #0af;
+}
+
+body.debug>*>*>*>*>*>*>*>*>*>div {
+    outline: 1px solid #d0f;
+}

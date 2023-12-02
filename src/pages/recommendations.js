@@ -1,16 +1,17 @@
-import { user } from '../states';
+import { root, session } from '../global';
 import { State } from '@9elt/miniframe';
-import rekoAPI from '../api';
+import { reko } from '../reko';
 import { isBigScreen, scrollup } from '../util';
-import { Pagination, Toggler, Sidebar, Content } from '../ui';
+import { Pagination, Toggler, Sidebar, Content, div } from '../ui';
+import { LoginForm } from '../ui/login';
 
 export default function Recommendations() {
-    const USER = user.value;
+    const USER = session.value;
 
-    return USER ? USER === -1
-        ? [{ tagName: 'p', children: ['loading goes here'] }]
-        : Recos(USER.username)
-        : [{ tagName: 'p', children: ['login form goes here'] }];
+    return USER ? Recos(USER.username) :
+        USER === null
+            ? [div({ className: 'max-65 loading usr-ph', style: { marginTop: '64px' } })]
+            : [LoginForm()];
 }
 
 function Recos(USER) {
@@ -45,7 +46,7 @@ function Recos(USER) {
 
     async function updateUsers(batch) {
         try {
-            const { data, pagination } = await rekoAPI(`/${USER}/similar?page=${batch}`);
+            const { data, pagination } = await reko(`/${USER}/similar?page=${batch}`);
             usersPagination.value = pagination;
             usersData.value = data;
             scrollup('.sidebar');
@@ -59,31 +60,44 @@ function Recos(USER) {
         if (user.null)
             return (recommendationsData.value = null);
         try {
-            const { data, pagination } = await rekoAPI(user.all
+            const { data, pagination } = await reko(user.all
                 ? `/${USER}/recommendations?page=${page}&batch=${batch}`
                 : `/${USER}/recommendations/${user.username}?page=${page}`
             );
             recoPagination.value = pagination;
             recommendationsData.value = data;
-            scrollup('.content');
+            scrollup('.wrapper');
         } catch {
             recommendationsData.value = [];
         }
     }
 
-    return [
-        Toggler(isSidebarOpen),
-        Sidebar(
-            isSidebarOpen,
-            recoUser,
-            usersData,
-            recommendationsData,
-            Pagination(usersPagination, usersPage)
-        ),
-        Content(
-            recoUser,
-            recommendationsData,
-            Pagination(recoPagination, recoPage)
-        ),
-    ];
+    return [{
+        tagName: 'div',
+        className: 'content recommendations',
+        children: [
+            Toggler(isSidebarOpen),
+            Sidebar(
+                isSidebarOpen,
+                recoUser,
+                usersData,
+                recommendationsData,
+                Pagination(usersPagination, usersPage)
+            ),
+            Content(
+                recoUser,
+                recommendationsData,
+                Pagination(recoPagination, recoPage)
+            ),
+        ]
+    }];
 }
+
+Recommendations.metadata = {
+    title: 'Anime recommendations',
+    description: 'Anime recommendations form similar users lists',
+};
+
+Recommendations.hydrate = () => {
+    root.value = Recommendations();
+};

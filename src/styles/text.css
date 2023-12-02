@@ -1,0 +1,80 @@
+.text-section {
+    max-width: min(830px, 95%);
+    width: 100%;
+    overflow-x: hidden;
+    margin-inline: auto;
+}
+
+.text-section hr {
+    color: #fff4;
+    margin-block: 16px;
+}
+
+.text-section .block {
+    margin-block: 48px;
+}
+
+.text {
+    padding: 32px;
+    padding-bottom: 32px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #0c1a2866;
+    backdrop-filter: blur(32px);
+}
+
+.text p {
+    margin-block: 1rem;
+}
+
+.text ul {
+    padding-left: 2rem;
+    list-style: circle;
+}
+
+.text ul li {
+    margin-top: 1rem;
+}
+
+.text ul.small li {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+}
+
+.text-section pre {
+    background-color: #0003;
+    font-size: 1rem;
+    padding: 1rem;
+    border-radius: .5rem;
+    overflow-x: hidden;
+}
+
+.text-section pre.code {
+    padding: 0rem;
+}
+
+.text-section pre.inline {
+    padding: .2rem;
+    margin: 0;
+    display: inline;
+}
+
+.text-section span.red,
+.text-section span.green,
+.text-section span.blue {
+    padding: .1rem .5rem;
+    border-radius: 2px;
+    background-color: #3a99ffa8;
+}
+
+.text-section span.green {
+    background-color: #6dd53ebf;
+}
+
+.text-section span.red {
+    background-color: #d53e77bf;
+}
+
+.text-section small {
+    opacity: .9;
+}

@@ -1,0 +1,55 @@
+.loading *:not(.loading) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.loading .loading {
+    opacity: 0.25;
+}
+
+.loading {
+    color: transparent;
+    pointer-events: none !important;
+}
+
+.loading:nth-child(1n) {
+    animation: Loading 2.5s ease-in-out infinite;
+}
+
+.loading:nth-child(2n) {
+    animation: Loading 2.5s -1.25s ease-in-out infinite;
+}
+
+.loading:nth-child(3n) {
+    animation: Loading 2.5s -1s ease-in-out infinite;
+}
+
+.loading:nth-child(4n) {
+    animation: Loading 2.5s -0.75s ease-in-out infinite;
+}
+
+.loading:nth-child(5n) {
+    animation: Loading 2.5s -0.5s ease-in-out infinite;
+}
+
+.loading:nth-child(6n) {
+    animation: Loading 2.5s -0.25s ease-in-out infinite;
+}
+
+.loading:nth-child(7n) {
+    animation: Loading 2.5s ease-in-out infinite;
+}
+
+@keyframes Loading {
+    0% {
+        background-color: #09131d88;
+    }
+
+    50% {
+        background-color: #09131d44;
+    }
+
+    100% {
+        background-color: #09131d88;
+    }
+}

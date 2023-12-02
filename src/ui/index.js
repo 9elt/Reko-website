@@ -1,7 +1,5 @@
-/** @typedef {import('@9elt/miniframe').MiniframeElement} Melement */
-
 import { State } from '@9elt/miniframe';
-import { wfb, join } from '../util';
+import { wfb, join, isSmallScreen } from '../util';
 import { LinkIcon } from './icons';
 
 export * from './common';
@@ -33,6 +31,8 @@ export const Sidebar = (open, currentUser, sidebarData, contentData, pagination)
                     if (!currentUser.value.all) {
                         contentData.value = null;
                         currentUser.value = { all: true };
+                        if (isSmallScreen())
+                            open.value = false;
                     }
                 })
             ].concat(wfb(data, USERPH, 32).map(user =>
@@ -40,6 +40,8 @@ export const Sidebar = (open, currentUser, sidebarData, contentData, pagination)
                     if (currentUser.value.username !== user.username) {
                         contentData.value = null;
                         currentUser.value = user;
+                        if (isSmallScreen())
+                            open.value = false;
                     }
                 }, !data)
             )))
@@ -50,7 +52,7 @@ export const Sidebar = (open, currentUser, sidebarData, contentData, pagination)
 
 export const Content = (currentUser, contentData, pagination) => ({
     tagName: 'div',
-    className: 'content',
+    className: 'wrapper',
     children: [
         Decscription(
             currentUser.as(user => user.all

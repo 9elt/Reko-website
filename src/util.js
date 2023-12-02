@@ -12,9 +12,18 @@ export function join(...classNames) {
 }
 
 export function scrollup(selector) {
+    const el = selector
+        ? document.querySelector(selector)
+        : document.body;
+    el && el.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+export function scrollto(selector) {
     const el = document.querySelector(selector);
-    if (el)
-        el.scrollTo({ top: 0, behavior: 'smooth' });
+    el && window.scrollTo({
+        top: el.offsetTop - 64,
+        behavior: 'smooth'
+    });
 }
 
 export function isBigScreen() {
@@ -22,8 +31,19 @@ export function isBigScreen() {
         && matchMedia('(min-width: 900px)').matches;
 }
 
+export function isSmallScreen() {
+    return typeof matchMedia !== 'undefined'
+        && matchMedia('(max-width: 600px)').matches;
+}
+
 export function last(path) {
-    return '/' + (path.split('/').pop() || '');
+    let res = '';
+    for (let i = 0; i < path.length; i++) {
+        res = path.charAt(i) + res;
+        if (char === '/')
+            return res;
+    }
+    return res;
 }
 
 export class Cache {

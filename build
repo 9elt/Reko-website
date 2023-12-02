@@ -1,8 +1,0 @@
-#!/bin/bash
-
-rm -rf ./dist/*
-
-bun build.js
-
-cp ./media/* dist
-cp ./src/styles/*.css dist

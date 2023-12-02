@@ -1,9 +1,9 @@
-import { root, router } from './states';
-
+import { root, router } from './global';
 import Index from './pages';
 import Recommendations from './pages/recommendations';
 import Docs from './pages/docs';
-import { Cache } from './util';
+import { Cache, scrollto, scrollup } from './util';
+import { metadata } from './metadata';
 
 const ROUTER = {
     "/": Index,
@@ -14,6 +14,9 @@ const ROUTER = {
 export const ROUTER_CACHE = new Cache();
 
 router.sub(async (route, prev) => {
+    if (!route)
+        return;
+
     console.log('router', route);
 
     if (route === prev)
@@ -23,10 +26,13 @@ router.sub(async (route, prev) => {
         window.history.pushState(route, '', route);
 
     try {
-        console.log(root.value);
-        root.value = ROUTER_CACHE.get(route)
-            || ROUTER_CACHE.set(route, await ROUTER[route]());
-        console.log(root.value);
+        const [r, hash] = route.split('#');
+        root.value = ROUTER_CACHE.get(r)
+            || ROUTER_CACHE.set(r, await ROUTER[r]());
+        metadata(ROUTER[r].metadata);
+        hash
+            ? scrollto('#' + hash)
+            : scrollup();
         console.log('router OK');
     }
     catch (error) {
@@ -35,6 +41,12 @@ router.sub(async (route, prev) => {
     }
 });
 
+router.reload = () => router.value = router.value;
+
+router.set = (route) => route !== router.value && (router.value = route);
+
+router.hydrate = () => ROUTER[router.value.split('#')[0]].hydrate();
+
 window.onpopstate = () => {
-    router.value = window.location.pathname;
+    router.set(window.location.pathname);
 };

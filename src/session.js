@@ -1,10 +1,11 @@
-import rekoAPI, { API_CACHE } from "./api";
+import { reko, API_CACHE } from "./reko";
 import { ROUTER_CACHE } from "./router";
-import { router, user } from "./states";
+import { router, session } from "./global";
+import { State } from "@9elt/miniframe";
 
 const STORAGE = {
     get() {
-        const data = localStorage.getItem('session') || null;
+        const data = localStorage.getItem('session') || 0;
         return data && JSON.parse(data);
     },
     set(data) {
@@ -12,39 +13,47 @@ const STORAGE = {
     }
 }
 
-const _user_legacy_init_ = () => {
+session.value = (_user_legacy_init_ = () => {
     const user = STORAGE.get();
-    return user && user.username ? user : null;
-}
+    return user && user.username ? user : 0;
+})();
 
-user.value = _user_legacy_init_();
-
-user.login = async (username) => {
-    await rekoAPI(`/${username}/recommendations?page=1&batch=1`);
-    user.value = { saved: [], username };
+session.login = async (username) => {
+    await reko(`/${username}/recommendations?page=1&batch=1`);
+    session.value = { saved: [], username };
     ROUTER_CACHE.clear();
-    router.value = router.value;
-    STORAGE.set(user.value);
+    router.reload();
+    STORAGE.set(session.value);
 }
 
-user.logout = () => {
-    user.value = null;
+session.logout = () => {
+    session.value = 0;
     API_CACHE.clear();
     ROUTER_CACHE.clear();
-    router.value = router.value;
-    STORAGE.set(user.value);
+    router.reload();
+    STORAGE.set(session.value);
 }
 
-user.save = (data) => {
-    user.value.saved.length < 32 &&
-        user.value.saved.push(data);
+session.saved = State.from(session.value.saved || []);
+
+session.saved.sub(c => session.value.saved = c);
+
+session.cansave = session.saved.as(s => s.length < 32);
+
+session.save = (data) => {
+    session.saved.set(c => [...c, data]);
 }
 
-user.unsave = (id) => {
-    user.value.saved =
-        user.value.saved.filter(e => e.id !== id);
+session.unsave = (id) => {
+    session.saved.set(c => c.filter(e => e.id !== id));
+}
+
+session.has = (id) => {
+    return session.saved.value.some(e => e.id == id);
 }
 
 window.onbeforeunload = () => {
-    STORAGE.set(user.value);
+    STORAGE.set(session.value);
 }
+
+export { };
