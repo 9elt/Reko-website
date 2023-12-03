@@ -2,19 +2,18 @@ import { root, session } from '../global';
 import { State } from '@9elt/miniframe';
 import { reko } from '../reko';
 import { isBigScreen, scrollup } from '../util';
-import { Pagination, Toggler, Sidebar, Content, div } from '../ui';
+import { div } from '../ui';
+import { Pagination, Toggler, Sidebar, Content } from '../ui/recommendations';
 import { LoginForm } from '../ui/login';
 
 export default function Recommendations() {
-    const USER = session.value;
-
-    return USER ? Recos(USER.username) :
-        USER === null
+    if (!session.value)
+        return session.value === null
             ? [div({ className: 'max-65 loading usr-ph', style: { marginTop: '64px' } })]
             : [LoginForm()];
-}
 
-function Recos(USER) {
+    const USER = session.value.username;
+
     const usersPage = State.from(1);
     const usersPagination = State.from({ current: 1, next: 2, previous: null });
 
@@ -33,12 +32,17 @@ function Recos(USER) {
         recoUser.value = { all: true };
     });
 
+    let debounce = 0;
+
     recoPage.sub(async (page) => {
-        await updateRecommendations(recoUser.value, page, usersPage.value);
+        !debounce &&
+            await updateRecommendations(recoUser.value, page, usersPage.value);
     });
 
-    recoUser.sub(async user => {
+    recoUser.sub(async (user) => {
+        debounce++;
         recoPage.value = 1;
+        debounce--;
         await updateRecommendations(user, recoPage.value, usersPage.value);
     });
 

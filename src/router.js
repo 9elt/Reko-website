@@ -43,7 +43,7 @@ router.sub(async (route, prev) => {
 
 router.reload = () => router.value = router.value;
 
-router.set = (route) => route !== router.value && (router.value = route);
+router.set = (route) => router.value = route;
 
 router.hydrate = () => ROUTER[router.value.split('#')[0]].hydrate();
 

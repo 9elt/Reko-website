@@ -13,6 +13,7 @@ export const version = State.from(null);
  * @type {State<string> & {
 *     reload: () => void;
 *     set: (route: string) => void;
+*     hydrate: () => void;
 * }}
 */
 export const router = State.from(window.location.pathname + window.location.hash);
@@ -32,7 +33,6 @@ export const root = State.from(document.querySelector('#root').childNodes);
 *    saved: State<{ id: number; }[]>;
 *    save: (data: any) => void;
 *    unsave: (id: any) => void;
-*    has: (id: any) => boolean;
 * }}
 * 
 * null  = loading session

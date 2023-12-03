@@ -3,11 +3,23 @@
     width: 100%;
     margin-inline: auto;
     display: flex;
+    align-items: center;
     justify-content: center;
     margin-top: 12px;
     margin-bottom: 8px;
+    color: #bbb;
 }
 
-.footer a {
-    margin-inline: 8px;
+.footer>* {
+    margin-inline: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer svg {
+    fill: currentColor;
+    width: 32px;
+    height: 32px;
+    margin-right: 4px;
 }

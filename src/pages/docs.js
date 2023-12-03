@@ -1,4 +1,3 @@
-import { metadata } from '../metadata';
 import { FullPre, InlinePre, Link, b, h1, h2, h3, h4, h5, i, li, p, small, ul } from '../ui';
 import { Code } from '../ui/macros' assert { type: 'macro' };
 import { Block, hr, br, Light, Param, ReqMethod, ResCode, TextSection } from '../ui/text';
@@ -10,7 +9,7 @@ export default function Docs() {
         children: [TextSection({},
             h1({},
                 Light('Reko API | '),
-                ' documentation',
+                ' Documentation',
             ),
             Block('',
                 p({},
@@ -282,7 +281,7 @@ export default function Docs() {
 }
 
 Docs.metadata = {
-    title: 'API Documentation',
+    title: 'Documentation',
     description: 'Implement Reko API in your app',
 };
 

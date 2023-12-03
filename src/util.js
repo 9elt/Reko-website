@@ -11,6 +11,10 @@ export function join(...classNames) {
     return res;
 }
 
+export function limit(str, limit = 32) {
+    return str.length > limit ? str.substring(0, limit - 3) + '...' : str;
+}
+
 export function scrollup(selector) {
     const el = selector
         ? document.querySelector(selector)

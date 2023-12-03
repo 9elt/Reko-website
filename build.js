@@ -16,6 +16,7 @@ const HTML_TEMPLATE = './template.html';
 build
 
 */
+
 import { createNode } from '@9elt/miniframe';
 import { readdir } from 'node:fs/promises';
 import { JSDOM } from 'jsdom';
@@ -39,6 +40,7 @@ try {
 }
 catch (error) {
     console.log('html template not found', error);
+    process.exit(1);
 }
 
 for (const name of await readdir(PAGES_DIR))
@@ -66,6 +68,7 @@ for (const name of await readdir(PAGES_DIR))
     }
     catch (error) {
         console.log('SSR error', name, error);
+        process.exit(1);
     }
 
 let css = '';
@@ -75,6 +78,7 @@ for (const name of await readdir(STYLES_DIR))
     }
     catch (error) {
         console.log('CSS error', name, error);
+        process.exit(1);
     }
 
 if (MINIFY)

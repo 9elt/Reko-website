@@ -1,7 +1,7 @@
 import { State } from "@9elt/miniframe"
 import { router, session } from "../global";
 import { join } from "../util";
-import { h2, p } from "./common";
+import { h2, p } from ".";
 import { br } from "./text";
 
 export const LoginForm = () => {
