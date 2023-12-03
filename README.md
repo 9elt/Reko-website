@@ -1,3 +1,5 @@
 # Reko API website
 
-in progress
+[**Reko API**](https://github.com/9elt/Reko) Website and documentation.
+
+An example implementation can be found at [**src/reko.js**](./src/reko.js)
