@@ -83,7 +83,7 @@ function Main() {
 }
 
 Index.metadata = {
-    title: 'Reko API, Match similar MyAnimeList users',
+    title: 'Reko API, Match Similar MyAnimeList Users',
     description: 'Find users with an high affinity and get anime recommendations',
 };
 

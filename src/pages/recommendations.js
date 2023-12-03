@@ -98,7 +98,7 @@ export default function Recommendations() {
 }
 
 Recommendations.metadata = {
-    title: 'Anime recommendations',
+    title: 'Recommendations',
     description: 'Anime recommendations form similar users lists',
 };
 
