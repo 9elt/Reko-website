@@ -10,9 +10,10 @@ import { M } from ".";
 export const Preview = () => {
     const data = State.from(null);
 
-    reko(`/${session.value.username}/recommendations?page=1&batch=1`)
-        .then(res => data.value = res.data)
-        .catch(() => data.vale = null);
+    if (session.value.username)
+        reko(`/${session.value.username}/recommendations?page=1&batch=1`)
+            .then(res => data.value = res.data)
+            .catch(() => data.vale = null);
 
     return M.div({
         className: 'max-75 preview'

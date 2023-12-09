@@ -14,11 +14,11 @@ export default function Recommendations() {
 
     const USER = session.value.username;
 
-    const usersPage = State.from(1);
-    const usersPagination = State.from({ current: 1, next: 2, previous: null });
+    const batchHandle = State.from(1);
+    const batchResponse = State.from({ current: 1, next: 2, previous: null });
 
-    const recoPage = State.from(1);
-    const recoPagination = State.from({ current: 1, next: 2, previous: null });
+    const pageHandle = State.from(1);
+    const recoResponse = State.from({ current: 1, next: 2, previous: null });
 
     const isSidebarOpen = State.from(isBigScreen());
 
@@ -27,31 +27,31 @@ export default function Recommendations() {
     const usersData = State.from(null);
     const recommendationsData = State.from(null);
 
-    usersPage.sub(async (batch) => {
+    batchHandle.sub(async (batch) => {
         await updateUsers(batch);
         recoUser.value = { all: true };
     });
 
     let debounce = 0;
 
-    recoPage.sub(async (page) => {
+    pageHandle.sub(async (page) => {
         !debounce &&
-            await updateRecommendations(recoUser.value, page, usersPage.value);
+            await updateRecommendations(recoUser.value, page, batchHandle.value);
     });
 
     recoUser.sub(async (user) => {
         debounce++;
-        recoPage.value = 1;
+        pageHandle.value = 1;
         debounce--;
-        await updateRecommendations(user, recoPage.value, usersPage.value);
+        await updateRecommendations(user, pageHandle.value, batchHandle.value);
     });
 
-    usersPage.value = 1;
+    batchHandle.value = 1;
 
     async function updateUsers(batch) {
         try {
             const { data, pagination } = await reko(`/${USER}/similar?page=${batch}`);
-            usersPagination.value = pagination;
+            batchResponse.value = pagination;
             usersData.value = data;
             scrollup('.sidebar');
         }
@@ -68,7 +68,7 @@ export default function Recommendations() {
                 ? `/${USER}/recommendations?page=${page}&batch=${batch}`
                 : `/${USER}/recommendations/${user.username}?page=${page}`
             );
-            recoPagination.value = pagination;
+            recoResponse.value = pagination;
             recommendationsData.value = data;
             scrollup('.wrapper');
         } catch {
@@ -86,12 +86,12 @@ export default function Recommendations() {
                 recoUser,
                 usersData,
                 recommendationsData,
-                Pagination(usersPagination, usersPage)
+                Pagination(batchResponse, batchHandle)
             ),
             Content(
                 recoUser,
                 recommendationsData,
-                Pagination(recoPagination, recoPage)
+                Pagination(recoResponse, pageHandle)
             ),
         ]
     }];

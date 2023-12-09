@@ -28,6 +28,6 @@ export function JavaScript(code) {
 /**
  * @param {string} code 
  */
-export function TypescriptScript(code) {
+export function TypeScript(code) {
     return Code(code, 'typescript');
 }

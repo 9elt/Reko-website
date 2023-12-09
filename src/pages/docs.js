@@ -1,5 +1,5 @@
 import { Link } from '../ui';
-import { TypeSript, JavaScript } from '../ui/macros' assert { type: 'macro' };
+import { TypeScript, JavaScript } from '../ui/macros' assert { type: 'macro' };
 import { Block, Light, Param, ReqMethod, ResCode, TextSection } from '../ui/text';
 import { M } from '../ui';
 
@@ -50,7 +50,7 @@ export default function Docs() {
             Block('generic-responses',
                 M.h3({}, 'Responses'),
                 M.p({}, 'Response data is wrapped in an object containing the requesting user data, and, for paginated responses, pagination details.'),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |   requester: {
                 |       username: string;
@@ -75,7 +75,7 @@ export default function Docs() {
                     M.b({}, 'unique id'),
                     '.'
                 ),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |     code: number;
                 |     id: string;
@@ -133,7 +133,7 @@ export default function Docs() {
                 M.br,
                 M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -187,7 +187,7 @@ export default function Docs() {
                 M.br,
                 M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -235,7 +235,7 @@ export default function Docs() {
                 M.br,
                 M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -267,7 +267,7 @@ export default function Docs() {
                 M.br,
                 M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                TypeSript(`\
+                TypeScript(`\
                 | {
                 |     requester: { ... };
                 |     data: {

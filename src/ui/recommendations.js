@@ -115,8 +115,8 @@ export const Decscription = (title, subtitle, pagination) => M.div({
     M.div({
         className: 'title',
     },
-        M.h3({ textTransform: 'capitalize' }, title),
-        M.p({}, subtitle),
+        M.h3({ textTransform: 'capitalize', children: title }),
+        M.p({ children: subtitle }),
     ),
     pagination,
 );

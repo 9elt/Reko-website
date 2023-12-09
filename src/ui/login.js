@@ -54,17 +54,17 @@ export const LoginForm = () => {
                     err || 'MyAnimeList username'
                 )
             ),
-        ),
-        M.div({
-            className: 'winput',
-        },
-            M.input({
-                id: 'mal-username',
-                name: 'mal-username',
-                type: 'text',
-                value: username,
-                oninput,
-            })
+            M.div({
+                className: 'winput',
+            },
+                M.input({
+                    id: 'mal-username',
+                    name: 'mal-username',
+                    type: 'text',
+                    value: username,
+                    oninput,
+                })
+            ),
         ),
     );
 }

@@ -21,7 +21,7 @@ import { scrollto } from '../util';
 export const M = [
     'div', 'p', 'a', 'header',
     'b', 'i', 'span', 'small', 'em', 'strong',
-    'form', 'label', 'input',
+    'form', 'label', 'input', 'button',
     'pre', 'img',
     'h1', 'h2', 'h3', 'h4', 'h5',
     'ul', 'li'
