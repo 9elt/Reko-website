@@ -1,8 +1,9 @@
 import { State } from "@9elt/miniframe";
-import { Button, DisabledButton, Link, div, h3, img, p, small, span } from ".";
+import { Link } from ".";
 import { LinkIcon, SaveIcon, TrashIcon } from "./icons";
 import { join, limit } from "../util";
 import { session } from "../global";
+import { M } from ".";
 
 /**
  * @param {{        
@@ -22,22 +23,24 @@ export const SmallCard = (entry, preventLoading) => {
     const loading = State.from(true);
     const load = () => loading.value = preventLoading;
 
-    return div({ className: loading.as(l => join('small card', l && 'loading')) },
+    return M.div({
+        className: loading.as(l => join('small card', l && 'loading'))
+    },
         Save(entry),
-        div({ className: loading.as(l => join('img-wrapper', l && 'loading')) },
-            entry.details.picture && img({
+        M.div({ className: loading.as(l => join('img-wrapper', l && 'loading')) },
+            entry.details.picture && M.img({
                 src: entry.details.picture,
                 alt: entry.details.title,
                 onload: load,
                 onerror: load,
             }),
         ),
-        div({ className: 'data-wrapper' },
-            h3({},
+        M.div({ className: 'data-wrapper' },
+            M.h3({},
                 limit(entry.details.title),
                 entry.details.airing_date && Year(entry.details.airing_date),
             ),
-            p({},
+            M.p({},
                 Link(
                     'https://myanimelist.net/anime/' + entry.id,
                     'MyAnimeList ', LinkIcon
@@ -81,66 +84,65 @@ export const FullCard = (user, entry, preventLoading) => {
     const loading = State.from(true);
     const load = () => loading.value = preventLoading;
 
-    return div({ className: loading.as(l => join('full card', l && 'loading')) },
+    return M.div({ className: loading.as(l => join('full card', l && 'loading')) },
         Save(entry),
-        div({ className: loading.as(l => join('img-wrapper', l && 'loading')) },
-            entry.details.picture && img({
+        M.div({ className: loading.as(l => join('img-wrapper', l && 'loading')) },
+            entry.details.picture && M.img({
                 src: entry.details.picture,
                 alt: entry.details.title,
                 onload: load,
                 onerror: load,
             }),
         ),
-        div({ className: 'data-wrapper' },
+        M.div({ className: 'data-wrapper' },
             user.all && entry.users
-                ? p({ className: 'entry-score' },
-                    span({ dataset: { score: entry.score } },
+                ? M.p({ className: 'entry-score' },
+                    M.span({ dataset: { score: entry.score } },
                         'average score ' + entry.score
                     ),
                     ' by ', entry.users.length, ' users'
                 )
-                : p({ className: 'entry-score' },
-                    span({ dataset: { score: entry.score } },
+                : M.p({ className: 'entry-score' },
+                    M.span({ dataset: { score: entry.score } },
                         'scored ' + entry.score
                     ),
                     ' by ' + user.username + ' ',
                 ),
-            h3({},
+            M.h3({},
                 entry.details.title,
                 entry.details.airing_date && Year(entry.details.airing_date),
             ),
-            p({ className: 'genres' },
+            M.p({ className: 'genres' },
                 ...entry.details.genres
-                    .map(genre => small({}, genre))
+                    .map(genre => M.small({}, genre))
             ),
-            p({},
+            M.p({},
                 entry.details.length && entry.details.length + ' Episode' + (entry.details.length > 1 ? 's ' : ' '),
-                entry.details.length && span({}, ' - '),
+                entry.details.length && M.span({}, ' - '),
                 entry.details.mean.toFixed(2) + ' on ',
                 Link(
                     'https://myanimelist.net/anime/' + entry.id,
                     'MyAnimeList ', LinkIcon
                 ),
             ),
-
             entry.users &&
-            div({ className: 'scores' },
-                p({ className: 'user-reco' },
-                    span({}, 'sim.'),
+            M.div({ className: 'scores' },
+                M.p({ className: 'user-reco' },
+                    M.span({}, 'sim.'),
                     ' ',
-                    span({}, 'score'),
+                    M.span({}, 'score'),
                     ' ',
-                    span({}, 'user'),
+                    M.span({}, 'user'),
                 ),
-                div({}, ...entry.users.map(user =>
-                    p({ className: 'user-reco' },
-                        span({}, user.similarity, small({}, '%')),
+                M.div({}, ...entry.users.map(user =>
+                    M.p({ className: 'user-reco' },
+                        M.span({}, user.similarity, M.small({}, '%')),
                         ' ',
-                        span({ dataset: { score: user.score } },
+                        M.span({ dataset: { score: user.score } },
                             user.score
                         ),
                         ' ',
-                        span({}, UserList(user.username))
+                        M.span({}, UserList(user.username))
                     )
                 )),
             ),
@@ -148,35 +150,41 @@ export const FullCard = (user, entry, preventLoading) => {
     );
 };
 
-const Save = (entry) => ({
-    tagName: 'div',
+const Save = (entry) => M.div({
     className: 'toggle-save',
-    children: [session.saved.as(s =>
+},
+    session.saved.as(s =>
         s.some(e => e.id === entry.id)
-            ? Button(() => session.unsave(entry.id),
+            ? M.button({
+                onclick: () => session.unsave(entry.id),
+            },
                 TrashIcon({ width: 32, className: 'light' })
             )
             : s.length < 32
-                ? Button(() => session.save(entry),
+                ? M.button({
+                    onclick: () => session.save(entry),
+                },
                     SaveIcon({ width: 32, className: 'transparent white' })
                 )
-                : DisabledButton(
+                : M.button({
+                    disabled: true
+                },
                     SaveIcon({ width: 32, className: 'black' })
                 )
-    )]
-});
+    )
+);
 
-const UserList = (user) => ({
-    tagName: 'a',
+const UserList = (user) => M.a({
     href: 'https://myanimelist.net/profile/' + user,
     target: '_blank',
     style: { textDecoration: 'none' },
-    children: [user],
-});
+},
+    user
+);
 
-const Year = (date) => ({
-    tagName: 'span',
+const Year = (date) => M.span({
     style: { fontSize: '14px' },
     className: 'lighter',
-    children: [' (', new Date(date).getFullYear(), ')']
-});
+},
+    ' (', new Date(date).getFullYear(), ')'
+);

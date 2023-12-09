@@ -2,10 +2,10 @@ import hljs from "highlight.js";
 
 /**
  * @param {string} code 
- * @param {'typescript' | 'javascript'} language 
- * @returns 
+ * @param {"javascript" | "typescript"} language 
+ * @returns {{ tagName: "pre"; className: "snippet"; innerHTML: string; }}
  */
-export function Code(code, language) {
+function Code(code, language) {
     return {
         tagName: 'pre',
         className: 'snippet',
@@ -16,4 +16,18 @@ export function Code(code, language) {
             { language }
         ).value,
     };
+}
+
+/**
+ * @param {string} code 
+ */
+export function JavaScript(code) {
+    return Code(code, 'javascript');
+}
+
+/**
+ * @param {string} code 
+ */
+export function TypescriptScript(code) {
+    return Code(code, 'typescript');
 }

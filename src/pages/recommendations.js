@@ -2,14 +2,14 @@ import { root, session } from '../global';
 import { State } from '@9elt/miniframe';
 import { reko } from '../reko';
 import { isBigScreen, scrollup } from '../util';
-import { div } from '../ui';
 import { Pagination, Toggler, Sidebar, Content } from '../ui/recommendations';
 import { LoginForm } from '../ui/login';
+import { M } from '../ui';
 
 export default function Recommendations() {
     if (!session.value)
         return session.value === null
-            ? [div({ className: 'max-65 loading usr-ph', style: { marginTop: '64px' } })]
+            ? [M.div({ className: 'max-65 loading usr-ph', style: { marginTop: '64px' } })]
             : [LoginForm()];
 
     const USER = session.value.username;

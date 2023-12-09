@@ -3,7 +3,7 @@
     "build": "rm -rf dist/* && bun build.js && cp -r media/* dist"
   },
   "dependencies": {
-    "@9elt/miniframe": "^0.5.0",
+    "@9elt/miniframe": "^0.6.1",
     "clean-css": "^5.3.3",
     "highlight.js": "^11.9.0",
     "jsdom": "^22.1.0"

@@ -1,53 +1,48 @@
 import { router } from '../global';
 import { scrollto } from '../util';
 
-const el = (tagName, props, children) => ({
-    tagName, children, ...props,
-});
-
-export const div = (p, ...c) => el('div', p, c);
-export const p = (p, ...c) => el('p', p, c);
-export const b = (p, ...c) => el('b', p, c);
-export const strong = (p, ...c) => el('strong', p, c);
-export const i = (p, ...c) => el('i', p, c);
-export const em = (p, ...c) => el('em', p, c);
-export const small = (p, ...c) => el('small', p, c);
-export const span = (p, ...c) => el('span', p, c);
-export const ul = (p, ...c) => el('ul', p, c);
-export const li = (p, ...c) => el('li', p, c);
-export const h1 = (p, ...c) => el('h1', p, c);
-export const h2 = (p, ...c) => el('h2', p, c);
-export const h3 = (p, ...c) => el('h3', p, c);
-export const h4 = (p, ...c) => el('h4', p, c);
-export const h5 = (p, ...c) => el('h5', p, c);
-export const h6 = (p, ...c) => el('h6', p, c);
-export const img = (p, ...c) => el('img', p, c);
-
-export const InlinePre = (...children) => ({
-    tagName: 'pre',
-    className: 'inline',
+/**
+ * @type {{ 
+ * [T in keyof HTMLElementTagNameMap]: 
+ * (
+ *    props: import('@9elt/miniframe').MiniframeElement<"http://www.w3.org/1999/xhtml", T>, 
+ *    ...children: import('@9elt/miniframe').MiniframeElement
+ * ) => import('@9elt/miniframe').MiniframeElement<"http://www.w3.org/1999/xhtml", T> 
+ * } 
+ * & { [T in 'br' | 'hr']: { tagName: T } } 
+ * & { svg: { 
+ * [T in keyof SVGElementTagNameMap]: 
+ * (
+ *    props: import('@9elt/miniframe').MiniframeElement<"http://www.w3.org/2000/svg", T>, 
+ *    ...children: import('@9elt/miniframe').MiniframeElement
+ * ) => import('@9elt/miniframe').MiniframeElement<"http://www.w3.org/2000/svg", T> 
+ * }}}
+ */
+export const M = [
+    'div', 'p', 'a', 'header',
+    'b', 'i', 'span', 'small', 'em', 'strong',
+    'form', 'label', 'input',
+    'pre', 'img',
+    'h1', 'h2', 'h3', 'h4', 'h5',
+    'ul', 'li'
+].reduce((M, tagName) => (M[tagName] = (props, ...children) => ({
+    tagName,
     children,
+    ...props,
+})) && M, {
+    svg: [
+        'svg', 'path', 'rect'
+    ].reduce((M, tagName) => (M[tagName] = (props, ...children) => ({
+        tagName,
+        children,
+        namespaceURI: 'http://www.w3.org/2000/svg',
+        ...props,
+    })) && M, {}),
+    br: { tagName: 'br' },
+    hr: { tagName: 'hr' },
 });
 
-export const FullPre = (...children) => ({
-    tagName: 'pre',
-    children,
-});
-
-export const Button = (onclick, ...children) => ({
-    tagName: 'button',
-    onclick,
-    children,
-});
-
-export const DisabledButton = (...children) => ({
-    tagName: 'button',
-    disabled: true,
-    children,
-});
-
-export const Link = (href, ...children) => /^\//.test(href) ? {
-    tagName: 'a',
+export const Link = (href, ...children) => M.a(/^\//.test(href) ? {
     href,
     onclick: (e) => {
         e.preventDefault();
@@ -55,7 +50,6 @@ export const Link = (href, ...children) => /^\//.test(href) ? {
     },
     children
 } : /^#/.test(href) ? {
-    tagName: 'a',
     href,
     onclick: (e) => {
         e.preventDefault();
@@ -64,8 +58,7 @@ export const Link = (href, ...children) => /^\//.test(href) ? {
     },
     children
 } : {
-    tagName: 'a',
     href,
     target: '_blank',
     children
-};
+});

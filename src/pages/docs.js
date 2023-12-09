@@ -1,18 +1,19 @@
-import { FullPre, InlinePre, Link, b, h1, h2, h3, h4, h5, i, li, p, small, ul } from '../ui';
-import { Code } from '../ui/macros' assert { type: 'macro' };
-import { Block, hr, br, Light, Param, ReqMethod, ResCode, TextSection } from '../ui/text';
+import { Link } from '../ui';
+import { TypeSript, JavaScript } from '../ui/macros' assert { type: 'macro' };
+import { Block, Light, Param, ReqMethod, ResCode, TextSection } from '../ui/text';
+import { M } from '../ui';
 
 export default function Docs() {
-    return [{
-        tagName: 'div',
+    return [M.div({
         className: 'content',
-        children: [TextSection({},
-            h1({},
+    },
+        TextSection({},
+            M.h1({},
                 Light('Reko API | '),
                 ' Documentation',
             ),
             Block('',
-                p({},
+                M.p({},
                     'To learn more about the Reko API inner workings, please check out the ',
                     Link(
                         'https://github.com/9elt/Reko#algorithm',
@@ -20,14 +21,14 @@ export default function Docs() {
                     ),
                     ' on GitHub',
                 ),
-                p({},
+                M.p({},
                     'Reko API is online at ',
-                    InlinePre('https://api.reko.moe'),
+                    M.pre({ className: 'inline' }, 'https://api.reko.moe'),
                     ', you can check the server status and api version at ',
-                    InlinePre('/version'),
+                    M.pre({ className: 'inline' }, '/version'),
                     '.'
                 ),
-                p({},
+                M.p({},
                     'For any doubts or issues you can ',
                     Link(
                         'https://myanimelist.net/profile/_nelt',
@@ -35,21 +36,21 @@ export default function Docs() {
                     )
                 )
             ),
-            hr,
-            h4({}, 'index'),
-            ul({ className: 'small' },
-                li({}, Link('#generic-responses', ' Generic Responses')),
-                li({}, Link('#generic-errors', ' Generic Errors')),
-                li({}, Link('#user-recommendations', ReqMethod('GET'), ' User Recommendations')),
-                li({}, Link('#specific-user-recommendations', ReqMethod('GET'), ' Specific User Recommendations')),
-                li({}, Link('#similar-users', ReqMethod('GET'), ' Similar Users')),
-                li({}, Link('#compare-users', ReqMethod('GET'), ' Compare Users')),
+            M.hr,
+            M.h4({}, 'index'),
+            M.ul({ className: 'small' },
+                M.li({}, Link('#generic-responses', ' Generic Responses')),
+                M.li({}, Link('#generic-errors', ' Generic Errors')),
+                M.li({}, Link('#user-recommendations', ReqMethod('GET'), ' User Recommendations')),
+                M.li({}, Link('#specific-user-recommendations', ReqMethod('GET'), ' Specific User Recommendations')),
+                M.li({}, Link('#similar-users', ReqMethod('GET'), ' Similar Users')),
+                M.li({}, Link('#compare-users', ReqMethod('GET'), ' Compare Users')),
             ),
-            hr,
+            M.hr,
             Block('generic-responses',
-                h3({}, 'Responses'),
-                p({}, 'Response data is wrapped in an object containing the requesting user data, and, for paginated responses, pagination details.'),
-                Code(`\
+                M.h3({}, 'Responses'),
+                M.p({}, 'Response data is wrapped in an object containing the requesting user data, and, for paginated responses, pagination details.'),
+                TypeSript(`\
                 | {
                 |   requester: {
                 |       username: string;
@@ -64,44 +65,44 @@ export default function Docs() {
                 | }`, 'typescript')
             ),
             Block('generic-errors',
-                h3({}, 'Errors'),
-                p({}, 'Common errors ', InlinePre('text/plain')),
-                p({}, ResCode(404, 'Resource does not exist')),
-                p({}, ResCode(405, 'Invalid request method')),
-                p({}, ResCode(503, 'Rate limited')),
-                p({},
+                M.h3({}, 'Errors'),
+                M.p({}, 'Common errors ', M.pre({ className: 'inline' }, 'text/plain')),
+                M.p({}, ResCode(404, 'Resource does not exist')),
+                M.p({}, ResCode(405, 'Invalid request method')),
+                M.p({}, ResCode(503, 'Rate limited')),
+                M.p({},
                     'All the errors that the server can handle, are sent as json. They include the response http satus code, a displayable message and their ',
-                    b({}, 'unique id'),
+                    M.b({}, 'unique id'),
                     '.'
                 ),
-                Code(`\
+                TypeSript(`\
                 | {
                 |     code: number;
                 |     id: string;
                 |     message: string;
                 | }`, 'typescript'),
-                p({},
+                M.p({},
                     'Common handled errors ',
-                    InlinePre('application/json'),
-                    small({}, i({}, '(status | ids)')),
-                    p({}, ResCode(403, 'PrivateUserList')),
-                    p({}, ResCode(404, 'UserNotFound')),
-                    p({}, ResCode(422, ['EmptyUserList', 'InvalidUserList'])),
-                    p({}, ResCode(500, ['HashFailed', 'FailedSave'])),
+                    M.pre({ className: 'inline' }, 'application/json'),
+                    M.small({}, M.i({}, '(status | ids)')),
+                    M.p({}, ResCode(403, 'PrivateUserList')),
+                    M.p({}, ResCode(404, 'UserNotFound')),
+                    M.p({}, ResCode(422, ['EmptyUserList', 'InvalidUserList'])),
+                    M.p({}, ResCode(500, ['HashFailed', 'FailedSave'])),
                 ),
             ),
-            hr,
+            M.hr,
             Block('',
-                h2({}, 'Requests')
+                M.h2({}, 'Requests')
             ),
-            hr,
+            M.hr,
             Block('user-recommendations',
-                h3({}, ReqMethod('GET'), ' User Recommendations'),
-                p({}, 'Get anime recommendations from the lists of the most similar users.'),
-                FullPre('/{username}/recommendations?page={1-20}&batch={1-40}'),
-                br,
-                small({}, 'query parameters'),
-                ul({},
+                M.h3({}, ReqMethod('GET'), ' User Recommendations'),
+                M.p({}, 'Get anime recommendations from the lists of the most similar users.'),
+                M.pre({}, '/{username}/recommendations?page={1-20}&batch={1-40}'),
+                M.br,
+                M.small({}, 'query parameters'),
+                M.ul({},
                     Param(
                         'page',
                         'number',
@@ -117,22 +118,22 @@ export default function Docs() {
                         'The page number is clamped between 1 and 40, all pages return data.',
                     ),
                 ),
-                br,
-                h5({},
+                M.br,
+                M.h5({},
                     'request example ',
-                    small({}, i({}, '(javascript)')),
+                    M.small({}, M.i({}, '(javascript)')),
                 ),
-                Code(`\
+                JavaScript(`\
                 | async function recommendations(username, page = 1, batch = 1) {
                 |     const res = await fetch(
                 |         \`https://api.reko.moe/\${username}/recommendations?page=\${page}&batch=\${batch}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
-                br,
-                h5({}, 'responses'),
+                M.br,
+                M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                Code(`\
+                TypeSript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -157,36 +158,36 @@ export default function Docs() {
                 |     }>;
                 | }`, 'typescript'),
             ),
-            hr,
+            M.hr,
             Block('specific-user-recommendations',
-                h3({}, ReqMethod('GET'), ' Specific User Recommendations'),
-                p({}, 'Get anime recommendations from the list of a specific user.'),
-                FullPre('/{username}/recommendations/{other}?page={1-20}'),
-                br,
-                small({}, 'query parameters'),
-                ul({}, Param(
+                M.h3({}, ReqMethod('GET'), ' Specific User Recommendations'),
+                M.p({}, 'Get anime recommendations from the list of a specific user.'),
+                M.pre({}, '/{username}/recommendations/{other}?page={1-20}'),
+                M.br,
+                M.small({}, 'query parameters'),
+                M.ul({}, Param(
                     'page',
                     'number',
                     'decides the current pagination',
                     true,
                     'The page number is clamped between 1 and 20, pages MAY NOT return data.',
                 )),
-                br,
-                h5({},
+                M.br,
+                M.h5({},
                     'request example ',
-                    small({}, i({}, '(javascript)')),
+                    M.small({}, M.i({}, '(javascript)')),
                 ),
-                Code(`\
+                JavaScript(`\
                 | async function recommendationsFrom(username, ohter, page = 1) {
                 |     const res = await fetch(
                 |         \`https://api.reko.moe/\${username}/recommendations/\${other}?page=\${page}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
-                br,
-                h5({}, 'responses'),
+                M.br,
+                M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                Code(`\
+                TypeSript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -205,36 +206,36 @@ export default function Docs() {
                 |     }>;
                 | }`, 'typescript'),
             ),
-            hr,
+            M.hr,
             Block('similar-users',
-                h3({}, ReqMethod('GET'), ' Similar Users'),
-                p({}, 'Get the most similar users.'),
-                FullPre('/{username}/similar?page={1-40}'),
-                br,
-                small({}, 'query parameters'),
-                ul({}, Param(
+                M.h3({}, ReqMethod('GET'), ' Similar Users'),
+                M.p({}, 'Get the most similar users.'),
+                M.pre({}, '/{username}/similar?page={1-40}'),
+                M.br,
+                M.small({}, 'query parameters'),
+                M.ul({}, Param(
                     'page',
                     'number',
                     'decides the current pagination',
                     true,
                     'The page number is clamped between 1 and 40, all pages return data.',
                 )),
-                br,
-                h5({},
+                M.br,
+                M.h5({},
                     'request example ',
-                    small({}, i({}, '(javascript)')),
+                    M.small({}, M.i({}, '(javascript)')),
                 ),
-                Code(`\
+                JavaScript(`\
                 | async function similarUsers(username, page = 1) {
                 |     const res = await fetch(
                 |         \`https://api.reko.moe/\${username}/similar?page=\${page}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
-                br,
-                h5({}, 'responses'),
+                M.br,
+                M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                Code(`\
+                TypeSript(`\
                 | {
                 |     requester: { ... };
                 |     pagination: { ... };
@@ -245,28 +246,28 @@ export default function Docs() {
                 |     }>;
                 | }`, 'typescript'),
             ),
-            hr,
+            M.hr,
             Block('compare-users',
-                h3({}, ReqMethod('GET'), ' Compare Users'),
-                p({}, 'Compare two users.'),
-                br,
-                FullPre('/{username}/compare/{other}'),
-                br,
-                h5({},
+                M.h3({}, ReqMethod('GET'), ' Compare Users'),
+                M.p({}, 'Compare two users.'),
+                M.br,
+                M.pre({}, '/{username}/compare/{other}'),
+                M.br,
+                M.h5({},
                     'request example ',
-                    small({}, i({}, '(javascript)')),
+                    M.small({}, M.i({}, '(javascript)')),
                 ),
-                Code(`\
+                JavaScript(`\
                 | async function compareUsers(username, other) {
                 |     const res = await fetch(
                 |         \`https://api.reko.moe/\${username}/compare/\${other}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
-                br,
-                h5({}, 'responses'),
+                M.br,
+                M.h5({}, 'responses'),
                 ResCode(200, 'Success'),
-                Code(`\
+                TypeSript(`\
                 | {
                 |     requester: { ... };
                 |     data: {
@@ -276,8 +277,8 @@ export default function Docs() {
                 |     };
                 | }`, 'typescript'),
             ),
-        )],
-    }];
+        ),
+    )];
 }
 
 Docs.metadata = {

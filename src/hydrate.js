@@ -1,7 +1,7 @@
 import { root, router, version } from "./global";
 import { Header } from "./ui/header";
 import { createNode } from "@9elt/miniframe";
-import { span } from "./ui";
+import { M } from "./ui";
 
 document
     .querySelector('header')
@@ -12,18 +12,17 @@ document
 document
     .querySelector('#root')
     .replaceWith(
-        createNode({
-            tagName: 'div',
+        createNode(M.div({
             className: 'main',
             id: 'root',
             children: root,
-        })
+        }))
     );
 
 document
     .querySelector('#version')
     .replaceWith(createNode(
-        span({ id: '#version' }, version.as(v =>
+        M.span({ id: '#version' }, version.as(v =>
             v ? v : v === 0 ? 'offline' : '0.0.0'
         ))
     ));
