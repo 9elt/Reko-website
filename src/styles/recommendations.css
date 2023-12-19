@@ -178,7 +178,7 @@
     }
 
     .toggle {
-        padding: 4px;
+        padding: 6px;
     }
 
     .toggle:hover~.sidebar:not(.active),

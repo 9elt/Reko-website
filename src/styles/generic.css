@@ -113,3 +113,10 @@ svg.white {
 ::-webkit-scrollbar-track {
     background: none;
 }
+
+*:focus {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
