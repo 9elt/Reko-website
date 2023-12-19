@@ -45,7 +45,7 @@ button:disabled {
 }
 
 .max-75 {
-    max-width: min(960px, 100%);
+    max-width: min(992px,100%);
     width: 100%;
     margin-inline: auto;
 }
@@ -96,4 +96,20 @@ svg.white {
 .dot.yellow {
     background-color: #ffc486;
     color: #333;
+}
+
+::-webkit-scrollbar {
+    background: none;
+    width: 6px;
+    height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #0e1b28;
+    border-right: 3px solid #132536;
+    border-radius: 1px;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
 }

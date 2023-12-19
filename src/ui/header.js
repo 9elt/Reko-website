@@ -3,7 +3,7 @@ import { version } from '../global';
 import { join } from '../util';
 import { session } from '../global';
 import { LogOutIcon, SaveIcon } from './icons';
-import { SmallCard } from './card';
+import { Card } from './card';
 import { Light } from './text';
 import { M } from '.';
 
@@ -71,7 +71,7 @@ const SavedBar = (active) => M.div({
         }),
         M.div({
             children: session.saved.as(s => s.map(entry =>
-                SmallCard(entry)
+                Card({ preview: true }, entry)
             )),
         })
     )

@@ -3,7 +3,7 @@ import { session } from "../global"
 import { reko } from "../reko"
 import { wfb } from "../util";
 import { Link } from ".";
-import { SmallCard } from "./card";
+import { Card } from "./card";
 import { ENTRY_PH } from "./recommendations";
 import { M } from ".";
 
@@ -26,7 +26,7 @@ export const Preview = () => {
         M.div({
             className: 'imgs',
             children: data.as(data => wfb(data, ENTRY_PH, 8)
-                .slice(0, 6).map(entry => SmallCard(entry)))
+                .slice(0, 6).map(entry => Card({ all: true }, entry)))
         }),
         M.p({},
             Link('/recommendations', 'Go to your recommendations >')

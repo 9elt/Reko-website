@@ -68,3 +68,53 @@ export class Cache {
         this._i = {};
     }
 }
+
+let canvas;
+try {
+    canvas = document.createElement('canvas').getContext('2d');
+}
+catch { }
+
+const COLORS_CACHE = new Cache();
+
+export function getImageColor(img) {
+    if (COLORS_CACHE.has(img.src))
+        return COLORS_CACHE.get(img.src);
+    try {
+        canvas.drawImage(img, 0, 0);
+        const bytes = canvas.getImageData(0, 0, img.width, img.height).data;
+        const colors = bysix(bytes, 4, 4);
+        colors.sort((a, b) => b.area - a.area);
+        return colors[0];
+    }
+    catch {
+        return null;
+    }
+}
+
+function bysix(bytes, pxsize = 4, aprox = 1) {
+    const inc = pxsize * aprox;
+    const len = bytes.length / inc;
+    const tot = len / inc;
+    const map = new Uint32Array(256).fill(0);
+    for (let i = 0; i < len; i += inc) {
+        const r = bytes[i];
+        const g = bytes[i + 1];
+        const b = bytes[i + 2];
+        const c = ((b >> 6) + ((g >> 6) << 2) + ((r >> 6) << 4)) << 2;
+        map[c]++;
+        map[c + 1] += r;
+        map[c + 2] += g;
+        map[c + 3] += b;
+    }
+    const result = [];
+    for (let c = 0; c < 256; c += 4)
+        if (map[c]) {
+            const bytes = new Uint8Array(3);
+            bytes[0] = map[c + 1] / map[c];
+            bytes[1] = map[c + 2] / map[c];
+            bytes[2] = map[c + 3] / map[c];
+            result.push({ code: c >> 2, bytes, area: map[c] / tot });
+        };
+    return result;
+}

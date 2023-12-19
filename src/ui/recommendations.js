@@ -1,4 +1,4 @@
-import { FullCard } from './card';
+import { Card } from './card';
 import { wfb, join, isSmallScreen } from '../util';
 import { ArrowLeftIcon, ArrowRightIcon, LinkIcon } from './icons';
 import { M } from '.';
@@ -51,7 +51,7 @@ export const Content = (currentUser, contentData, pagination) => {
         const d = wfb(data, ENTRY_PH, 16)
         return d.length === 0
             ? NoRecommendations(currentUser.value)
-            : d.map(reko => FullCard(currentUser.value, reko, !data))
+            : d.map(reko => Card(currentUser.value, reko, !data))
     });
 
     return M.div({ className: 'wrapper' },

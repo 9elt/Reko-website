@@ -17,23 +17,7 @@
     padding-block: 16px;
 }
 
-::-webkit-scrollbar {
-    background: none;
-    width: 6px;
-    height: 0;
-}
-
 .preview .imgs::-webkit-scrollbar {
     width: 0;
     height: 6px;
-}
-
-::-webkit-scrollbar-thumb {
-    background-color: #0e1b28;
-    border-right: 3px solid #132536;
-    border-radius: 1px;
-}
-
-::-webkit-scrollbar-track {
-    background: none;
 }
