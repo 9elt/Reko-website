@@ -85,7 +85,7 @@ export function getImageColor(img) {
         const bytes = canvas.getImageData(0, 0, img.width, img.height).data;
         const colors = bysix(bytes, 4, 4);
         colors.sort((a, b) => b.area - a.area);
-        return colors[0];
+        return COLORS_CACHE.set(img.src, colors[0]);
     }
     catch {
         return null;

@@ -177,6 +177,10 @@
         transition: all 180ms ease-in-out;
     }
 
+    .toggle {
+        padding: 4px;
+    }
+
     .toggle:hover~.sidebar:not(.active),
     .sidebar:hover:not(.active) {
         overflow: hidden;
@@ -186,8 +190,8 @@
 
     .sidebar.active {
         overflow: auto;
-        max-width: calc(100vw - 47px);
+        max-width: 100vw;
         flex-shrink: 0;
-        padding-right: 12px;
+        padding-right: 36px;
     }
 }
