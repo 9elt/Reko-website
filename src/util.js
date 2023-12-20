@@ -69,23 +69,67 @@ export class Cache {
     }
 }
 
-let canvas;
-try {
-    canvas = document.createElement('canvas').getContext('2d');
+export class Color {
+    bytes;
+    constructor(...bytes) {
+        this.bytes = bytes;
+    }
+    clone() {
+        return new Color(...this.bytes);
+    }
+    toString() {
+        return 'rgba('
+            + this.bytes[0] + ','
+            + this.bytes[1] + ','
+            + this.bytes[2] + ','
+            + (this.bytes[3] || 1)
+            + ')';
+    }
+    mix(other, stren = 0.5) {
+        const rev = 1 - stren;
+        for (let i = 0; i < 4; i++)
+            this.bytes[i] = this.bytes[i] * rev + other.bytes[i] * stren;
+        return this;
+    }
+    opacity(v) {
+        this.bytes[3] = v;
+        return this;
+    }
 }
-catch { }
+
+export const isGPU = (() => {
+    try {
+        const c = document.createElement('canvas');
+        return c.getContext('webgl') || c.getContext('experimental-webgl') && true;
+    }
+    catch {
+        return null;
+    }
+})();
+
+const canvas = (() => {
+    try {
+        return document.createElement('canvas').getContext('2d');
+    }
+    catch {
+        return null;
+    }
+})();
 
 const COLORS_CACHE = new Cache();
 
 export function getImageColor(img) {
     if (COLORS_CACHE.has(img.src))
         return COLORS_CACHE.get(img.src);
+
     try {
         canvas.drawImage(img, 0, 0);
         const bytes = canvas.getImageData(0, 0, img.width, img.height).data;
-        const colors = bysix(bytes, 4, 4);
-        colors.sort((a, b) => b.area - a.area);
-        return COLORS_CACHE.set(img.src, colors[0]);
+        const colors = bysix(bytes, 4, 4).sort((a, b) => b.area - a.area);
+        return COLORS_CACHE.set(
+            img.src,
+            new Color(...colors[0].bytes, 1)
+        );
     }
     catch {
         return null;

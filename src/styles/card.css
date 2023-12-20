@@ -58,19 +58,12 @@
     }
 }
 
-.card .img {
-    clip-path: polygon(100% 0,
-            100% 100%,
-            0% 100%,
-            0% 28px,
-            28px 28px,
-            28px 0%,
-            0% 0%);
-}
-
 .card>.img>img {
     width: 101%;
+    height: auto;
     pointer-events: none;
+    flex-shrink: 0;
+    transition: opacity 100ms ease-in-out;
 }
 
 .card.active.complete .data {
@@ -129,9 +122,10 @@
 
 .card .toggle-save {
     position: absolute;
-    top: 0;
-    left: 0;
-    filter: drop-shadow(0 0 12px #000);
+    z-index: 2;
+    top: 8px;
+    left: 8px;
+    border-radius: 3px;
 }
 
 .card .scores {

@@ -1,16 +1,11 @@
 import { State } from "@9elt/miniframe";
-import { Link } from ".";
-import { LinkIcon, SaveIcon, TrashIcon } from "./icons";
-import { join, limit, getImageColor } from "../util";
+import { Link, M } from ".";
 import { session } from "../global";
-import { M } from ".";
+import { Color, getImageColor, isGPU, join, limit } from "../util";
+import { LinkIcon, SaveIcon, TrashIcon } from "./icons";
 
-const B = [9, 19, 29];
-const mix = (P) => 'rgb('
-    + (P[0] * 0.1 + B[0] * 0.9) + ','
-    + (P[1] * 0.1 + B[1] * 0.9) + ','
-    + (P[2] * 0.1 + B[2] * 0.9) + ','
-    + '0.7)';
+const ASPECT_RATIO = 319 / 225;
+const BGCOLOR = new Color(9, 19, 29, 1);
 
 /**
  * @param {{
@@ -48,9 +43,9 @@ export const Card = (user, entry, preventLoading) => {
     const hover = State.from(false);
     const active = State.from(false);
     const status = State.use({ loading, active });
-    const color = State.from(null);
 
-    const col = color.as(c => c ? mix(c.bytes) : mix(B));
+    const color = State.from(BGCOLOR);
+    const bgcolor = color.as(c => c.clone().mix(BGCOLOR, 0.9));
 
     const load = () => loading.value = preventLoading;
 
@@ -59,9 +54,14 @@ export const Card = (user, entry, preventLoading) => {
     if (entry.details.picture) {
         img = document.createElement('img');
         img.crossOrigin = 'anonymous';
+        img.style.opacity = 0;
         img.onload = () => {
             load();
             color.value = getImageColor(img);
+            const ar = img.height / img.width;
+            if (ar < ASPECT_RATIO)
+                img.style.width = Math.ceil(100 * ASPECT_RATIO / ar) + '%';
+            img.style.opacity = 1;
         };
         img.onerror = load;
         img.alt = entry.details.title;
@@ -75,7 +75,9 @@ export const Card = (user, entry, preventLoading) => {
             active && 'active',
             user.all && entry.users && 'complete',
         )),
-        style: { backgroundColor: col },
+        style: {
+            backgroundColor: bgcolor.as(c => c.clone().opacity(0.7)),
+        },
         onmouseenter: () => hover.value = true,
         onmouseleave: () => hover.value = false,
         onclick: (e) => {
@@ -83,17 +85,17 @@ export const Card = (user, entry, preventLoading) => {
                 active.value = !active.value
         },
     },
-        Save(entry),
+        Save(entry, bgcolor, color),
         M.div({
-            className: 'img',
+            className: loading.as(loading => join(
+                'img',
+                loading && 'loading',
+            )),
+            style: {
+                boxShadow: isGPU && color.as(c => '0 8px 16px ' + c.clone().opacity(0.1))
+            }
         },
             img,
-            // entry.details.picture && M.img({
-            //     src: entry.details.picture,
-            //     alt: entry.details.title,
-            //     onload: load,
-            //     onerror: load,
-            // }),
         ),
         M.div({
             className: 'data'
@@ -181,8 +183,12 @@ export const Card = (user, entry, preventLoading) => {
     );
 };
 
-const Save = (entry) => M.div({
+const Save = (entry, bgcolor, shadow) => M.div({
     className: 'toggle-save',
+    style: {
+        backgroundColor: bgcolor,
+        boxShadow: isGPU && shadow.as(c => 'inset 0 0 8px ' + c.clone().opacity(0.3)),
+    },
 },
     session.saved.as(s =>
         s.some(e => e.id === entry.id)
