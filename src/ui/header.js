@@ -12,12 +12,12 @@ export const Header = (logo) => {
     return M.header({
         className: 'header',
     },
-        session.as(u => u && SavedBar(openSaved)),
-        session.as(u => u && M.div({
+        session.as(u => !!u && SavedBar(openSaved)),
+        session.as(u => !!u && M.div({
             className: 'close',
             onclick: () => openSaved.value = false,
         })),
-        session.as(u => u && M.div({},
+        session.as(u => !!u && M.div({},
             M.button({
                 onclick: () => openSaved.set(c => !c),
             },
@@ -34,7 +34,7 @@ export const Header = (logo) => {
             )),
         )),
         logo,
-        session.as(u => u && M.div({ className: 'center-center' },
+        session.as(u => !!u && M.div({ className: 'center-center' },
             M.p({}, u.username),
             M.button({
                 onclick: session.logout,
