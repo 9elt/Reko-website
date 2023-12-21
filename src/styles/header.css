@@ -1,11 +1,14 @@
-.header {
+header {
     width: 100%;
-    min-height: 52px;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 9;
     background-color: #09131de5;
+}
+
+.header {
+    min-height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -59,17 +62,8 @@
 
 .savedbar {
     position: fixed;
-    overflow-y: scroll;
-    background-color: #09131de5;
-    top: 4.5rem;
-    left: .5rem;
-    border: transparent solid 0px;
-    border-radius: .5rem;
-    max-height: calc(100vh - 7rem);
-    min-width: 0;
-    max-width: 0;
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
+    width: 100%;
+    height: 0;
     z-index: 2;
 }
 
@@ -88,17 +82,38 @@
     z-index: 1;
 }
 
-.savedbar.active {
-    min-height: calc(100vh - 7rem);
-    min-width: 22rem;
-    max-width: 22rem;
-    border: transparent solid .5rem;
+.savedbar>div {
+    overflow-y: scroll;
+    background-color: #09131de5;
+    margin-top: 48px;
+    margin-left: 16px;
+    border: transparent solid 0px;
+    border-radius: 4px;
+    height: 0;
+    width: calc(100% - 32px);
+    overflow: hidden;
+    transition: all 200ms ease-in-out;
+}
+
+.savedbar.active>div {
+    height: calc(100vh - 96px);
+    max-height: calc(100vh - 96px);
+    height: fit-content;
+    padding-bottom: 16px;
+    border: transparent solid 2px;
     overflow: auto;
 }
 
-.savedbar>div {
-    overflow-y: scroll;
-    min-height: calc(100vh - 8rem);
+.savedbar .heading  {
+    padding: 16px;
+    padding-top: 32px;
+    text-align: center;
+}
+
+.savedbar .entries {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .savedbar::-webkit-scrollbar,

@@ -1,12 +1,12 @@
-import { root, router, version } from "./global";
-import { Header } from "./ui/header";
 import { createNode } from "@9elt/miniframe";
+import { root, router, version } from "./global";
 import { M } from "./ui";
+import { Header } from "./ui/header";
 
 document
-    .querySelector('header')
+    .querySelector('.header')
     .replaceWith(createNode(
-        Header(document.querySelector('header>a'))
+        Header(document.querySelector('.header>a'))
     ));
 
 document

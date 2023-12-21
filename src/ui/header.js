@@ -1,15 +1,14 @@
 import { State } from '@9elt/miniframe';
-import { version } from '../global';
-import { join } from '../util';
-import { session } from '../global';
-import { LogOutIcon, SaveIcon } from './icons';
-import { Card } from './card';
-import { Light } from './text';
 import { M } from '.';
+import { session, version } from '../global';
+import { join } from '../util';
+import { Card } from './card';
+import { LogOutIcon, SaveIcon } from './icons';
+import { Light } from './text';
 
 export const Header = (logo) => {
     const openSaved = State.from(false);
-    return M.header({
+    return M.div({
         className: 'header',
     },
         session.as(u => !!u && SavedBar(openSaved)),
@@ -50,29 +49,34 @@ export const Header = (logo) => {
     );
 };
 
-const SavedBar = (active) => M.div({
-    className: active.as(active => join('savedbar', active && 'active'))
+const SavedBar = (active) => {
+    return M.div({
+        className: active.as(active => join('savedbar', active && 'active'))
+    },
+        M.div({},
+            session.saved.as(s => s.length
+                ? SavedRecoHeading(s)
+                : NoSavedReco()
+            ),
+            M.div({
+                className: 'entries',
+                children: session.saved.as(s => s.map(entry =>
+                    Card({ preview: true }, entry)
+                )),
+            })
+        )
+    );
+};
+
+const SavedRecoHeading = (saved) => M.div({
+    className: 'heading',
 },
-    M.div({},
-        M.div({
-            style: { textAlign: 'center' },
-            children: session.saved.as(s => s.length
-                ? [
-                    M.h3({},
-                        s.length, ' saved ', Light(' of 32')
-                    ),
-                    M.br,
-                ]
-                : [
-                    M.h3({}, 'You don\'t have saved recommendations'),
-                    M.p({}, 'Click on the save icon to save them')
-                ]
-            )
-        }),
-        M.div({
-            children: session.saved.as(s => s.map(entry =>
-                Card({ preview: true }, entry)
-            )),
-        })
-    )
+    M.h3({}, saved.length, ' saved ', Light(' of 32')),
+);
+
+const NoSavedReco = () => M.div({
+    className: 'heading',
+},
+    M.h3({}, 'You don\'t have saved recommendations'),
+    M.p({}, 'Click on the save icon to save them')
 );

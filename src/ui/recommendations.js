@@ -1,7 +1,7 @@
-import { Card } from './card';
-import { wfb, join, isSmallScreen } from '../util';
-import { ArrowLeftIcon, ArrowRightIcon, LinkIcon } from './icons';
 import { M } from '.';
+import { isSmallScreen, join, wfb } from '../util';
+import { Card } from './card';
+import { ArrowLeftIcon, ArrowRightIcon, LinkIcon } from './icons';
 
 export const Toggler = (open) => M.div({
     className: 'toggle',
@@ -146,7 +146,7 @@ export const ListLink = (user) => M.a({
 export const NoRecommendations = (user) => [
     M.div({
         style: {
-            width: '100vw',
+            width: '100%',
             height: '400px',
             textAlign: 'center'
         }

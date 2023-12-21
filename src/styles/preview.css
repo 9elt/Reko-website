@@ -17,7 +17,3 @@
     padding-block: 16px;
 }
 
-.preview .imgs::-webkit-scrollbar {
-    width: 0;
-    height: 6px;
-}

@@ -15,6 +15,10 @@ export function limit(str, limit = 32) {
     return str.length > limit ? str.substring(0, limit - 3) + '...' : str;
 }
 
+export function clamp(v, max, min = 0) {
+    return v > max ? max : v < min ? min : v;
+}
+
 export function scrollup(selector) {
     const el = selector
         ? document.querySelector(selector)

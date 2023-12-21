@@ -32,8 +32,10 @@
 }
 
 .toggle {
+    position: sticky;
+    top: 0;
+    height: 100vh;
     padding: 16px;
-    height: 100%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -60,20 +62,20 @@
 
 .content.recommendations {
     display: flex;
-    height: 100vh;
     padding-top: 0;
     padding-bottom: 0;
 }
 
 .content.recommendations .sidebar,
 .content.recommendations .wrapper {
-    height: 100%;
-    overflow: scroll;
     padding-top: 64px;
     padding-bottom: 32px;
 }
 
 .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
     width: 95%;
     flex-shrink: 0.7;
     overflow: hidden;
@@ -179,6 +181,8 @@
 
     .toggle {
         padding: 6px;
+        position: fixed;
+        z-index: 8;
     }
 
     .toggle:hover~.sidebar:not(.active),
@@ -192,6 +196,19 @@
         overflow: auto;
         max-width: 100vw;
         flex-shrink: 0;
-        padding-right: 36px;
+        padding-right: 22px;
+        padding-left: 22px;
+        width: 100%;
+    }
+
+    .sidebar.active~.wrapper { 
+        max-height: 100vh;
+        overflow: hidden;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .toggle {
+        display: none;
     }
 }

@@ -32,6 +32,11 @@ button:disabled {
     cursor: not-allowed;
 }
 
+#root, .header, .savedbar>div {
+    max-width: 1648px;
+    margin-inline: auto;
+}
+
 .center-center {
     display: flex;
     align-items: center;
@@ -40,12 +45,6 @@ button:disabled {
 
 .max-65 {
     max-width: min(830px, 95%);
-    width: 100%;
-    margin-inline: auto;
-}
-
-.max-75 {
-    max-width: min(992px,100%);
     width: 100%;
     margin-inline: auto;
 }

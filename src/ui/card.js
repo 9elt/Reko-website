@@ -190,24 +190,23 @@ const Save = (entry, bgcolor, shadow) => M.div({
         boxShadow: isGPU && shadow.as(c => 'inset 0 0 8px ' + c.clone().opacity(0.3)),
     },
 },
-    session.saved.as(s =>
-        s.some(e => e.id === entry.id)
+    session.saved.as(s => s.some(e => e.id === entry.id)
+        ? M.button({
+            onclick: () => session.unsave(entry.id),
+        },
+            TrashIcon({ width: 32, className: 'light' })
+        )
+        : s.length < 32
             ? M.button({
-                onclick: () => session.unsave(entry.id),
+                onclick: () => session.save(entry),
             },
-                TrashIcon({ width: 32, className: 'light' })
+                SaveIcon({ width: 32, className: 'transparent white' })
             )
-            : s.length < 32
-                ? M.button({
-                    onclick: () => session.save(entry),
-                },
-                    SaveIcon({ width: 32, className: 'transparent white' })
-                )
-                : M.button({
-                    disabled: true
-                },
-                    SaveIcon({ width: 32, className: 'black' })
-                )
+            : M.button({
+                disabled: true
+            },
+                SaveIcon({ width: 32, className: 'black' })
+            )
     )
 );
 

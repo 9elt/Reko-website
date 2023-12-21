@@ -1,11 +1,19 @@
 import { State } from "@9elt/miniframe";
-import { session } from "../global"
-import { reko } from "../reko"
-import { wfb } from "../util";
-import { Link } from ".";
+import { Link, M } from ".";
+import { session } from "../global";
+import { reko } from "../reko";
+import { clamp, wfb } from "../util";
 import { Card } from "./card";
 import { ENTRY_PH } from "./recommendations";
-import { M } from ".";
+
+const getncards = () => clamp(Math.floor(window.innerWidth / 250), 4);
+
+const ncards = State.from(getncards());
+window.onresize = () => {
+    let n = getncards();
+    if (n !== ncards.value)
+        ncards.value = n;
+};
 
 export const Preview = () => {
     const data = State.from(null);
@@ -13,10 +21,10 @@ export const Preview = () => {
     if (session.value.username)
         reko(`/${session.value.username}/recommendations?page=1&batch=1`)
             .then(res => data.value = res.data)
-            .catch(() => data.vale = null);
+            .catch(() => data.value = null);
 
     return M.div({
-        className: 'max-75 preview'
+        className: 'preview'
     },
         M.h2({},
             'Hello ',
@@ -24,9 +32,12 @@ export const Preview = () => {
             ', welcome back!'
         ),
         M.div({
-            className: 'imgs',
-            children: data.as(data => wfb(data, ENTRY_PH, 8)
-                .slice(0, 6).map(entry => Card({ all: true }, entry)))
+            className: 'imgs center-center',
+            children: State.use({ data, size: ncards }).as(({ data, size }) =>
+                wfb(data, ENTRY_PH, 8)
+                    .slice(0, size)
+                    .map(entry => Card({ all: true }, entry))
+            )
         }),
         M.p({},
             Link('/recommendations', 'Go to your recommendations >')
