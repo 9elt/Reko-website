@@ -70,7 +70,7 @@ export default function Recommendations() {
             );
             recoResponse.value = pagination;
             recommendationsData.value = data;
-            scrollup('.wrapper');
+            scrollup();
         } catch {
             recommendationsData.value = [];
         }
