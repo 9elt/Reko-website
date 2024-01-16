@@ -73,31 +73,37 @@ export class Cache {
     }
 }
 
-export class Color {
-    bytes;
-    constructor(...bytes) {
-        this.bytes = bytes;
-    }
-    clone() {
-        return new Color(...this.bytes);
+export class Color extends Uint8ClampedArray {
+    constructor(r = 255, g = 255, b = 255, a = 255) {
+        super(4);
+        this[0] = r;
+        this[1] = g;
+        this[2] = b;
+        this[3] = a;
     }
     toString() {
         return 'rgba('
-            + this.bytes[0] + ','
-            + this.bytes[1] + ','
-            + this.bytes[2] + ','
-            + (this.bytes[3] || 1)
-            + ')';
+            + this[0] + ','
+            + this[1] + ','
+            + this[2] + ','
+            + (this[3] / 255).toFixed(2) + ')';
     }
     mix(other, stren = 0.5) {
-        const rev = 1 - stren;
-        for (let i = 0; i < 4; i++)
-            this.bytes[i] = this.bytes[i] * rev + other.bytes[i] * stren;
-        return this;
+        const otherstren = 1 - stren;
+        return new Color(
+            this[0] * otherstren + other[0] * stren,
+            this[1] * otherstren + other[1] * stren,
+            this[2] * otherstren + other[2] * stren,
+            this[3] * otherstren + other[3] * stren,
+        );
     }
-    opacity(v) {
-        this.bytes[3] = v;
-        return this;
+    opacity(stren = 1) {
+        return new Color(
+            this[0],
+            this[1],
+            this[2],
+            stren * 255,
+        );
     }
 }
 
@@ -132,7 +138,7 @@ export function getImageColor(img) {
         const colors = bysix(bytes, 4, 4).sort((a, b) => b.area - a.area);
         return COLORS_CACHE.set(
             img.src,
-            new Color(...colors[0].bytes, 1)
+            colors[0].bytes
         );
     }
     catch {
@@ -158,7 +164,7 @@ function bysix(bytes, pxsize = 4, aprox = 1) {
     const result = [];
     for (let c = 0; c < 256; c += 4)
         if (map[c]) {
-            const bytes = new Uint8Array(3);
+            const bytes = new Color();
             bytes[0] = map[c + 1] / map[c];
             bytes[1] = map[c + 2] / map[c];
             bytes[2] = map[c + 3] / map[c];

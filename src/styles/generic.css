@@ -34,7 +34,7 @@ button:disabled {
 
 #root, .header, .savedbar>div {
     max-width: 1648px;
-    margin-inline: auto;
+    margin-inline: auto !important;
 }
 
 .center-center {

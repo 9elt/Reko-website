@@ -5,7 +5,7 @@ import { Color, getImageColor, isGPU, join, limit } from "../util";
 import { LinkIcon, SaveIcon, TrashIcon } from "./icons";
 
 const ASPECT_RATIO = 319 / 225;
-const BGCOLOR = new Color(9, 19, 29, 1);
+const BGCOLOR = new Color(9, 19, 29);
 
 /**
  * @param {{
@@ -45,7 +45,9 @@ export const Card = (user, entry, preventLoading) => {
     const status = State.use({ loading, active });
 
     const color = State.from(BGCOLOR);
-    const bgcolor = color.as(c => c.clone().mix(BGCOLOR, 0.9));
+    const bgcolor = color.as(c => c.mix(BGCOLOR, 0.9));
+
+    bgcolor.sub(c => console.log(c + ""));
 
     const load = () => loading.value = preventLoading;
 
@@ -76,7 +78,7 @@ export const Card = (user, entry, preventLoading) => {
             user.all && entry.users && 'complete',
         )),
         style: {
-            backgroundColor: bgcolor.as(c => c.clone().opacity(0.7)),
+            backgroundColor: bgcolor.as(c => c.opacity(0.7)),
         },
         onmouseenter: () => hover.value = true,
         onmouseleave: () => hover.value = false,
@@ -92,7 +94,7 @@ export const Card = (user, entry, preventLoading) => {
                 loading && 'loading',
             )),
             style: {
-                boxShadow: isGPU && color.as(c => '0 8px 16px ' + c.clone().opacity(0.1))
+                boxShadow: isGPU && color.as(c => '0 8px 16px ' + c.opacity(0.1))
             }
         },
             img,
@@ -187,7 +189,7 @@ const Save = (entry, bgcolor, shadow) => M.div({
     className: 'toggle-save',
     style: {
         backgroundColor: bgcolor,
-        boxShadow: isGPU && shadow.as(c => 'inset 0 0 8px ' + c.clone().opacity(0.3)),
+        boxShadow: isGPU && shadow.as(c => 'inset 0 0 8px ' + c.opacity(0.3)),
     },
 },
     session.saved.as(s => s.some(e => e.id === entry.id)
