@@ -47,8 +47,6 @@ export const Card = (user, entry, preventLoading) => {
     const color = State.from(BGCOLOR);
     const bgcolor = color.as(c => c.mix(BGCOLOR, 0.9));
 
-    bgcolor.sub(c => console.log(c + ""));
-
     const load = () => loading.value = preventLoading;
 
     let img = null;
@@ -94,7 +92,7 @@ export const Card = (user, entry, preventLoading) => {
                 loading && 'loading',
             )),
             style: {
-                boxShadow: isGPU && color.as(c => '0 8px 16px ' + c.opacity(0.1))
+                boxShadow: isGPU && color.as(c => '0 16px 64px 8px ' + c.opacity(0.1))
             }
         },
             img,

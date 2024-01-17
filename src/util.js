@@ -135,11 +135,9 @@ export function getImageColor(img) {
     try {
         canvas.drawImage(img, 0, 0);
         const bytes = canvas.getImageData(0, 0, img.width, img.height).data;
-        const colors = bysix(bytes, 4, 4).sort((a, b) => b.area - a.area);
-        return COLORS_CACHE.set(
-            img.src,
-            colors[0].bytes
-        );
+        const color = bysix(bytes, 4, 4).sort((a, b) => b.area - a.area)[0];
+
+        return COLORS_CACHE.set(img.src, color.bytes);
     }
     catch {
         return null;
@@ -163,12 +161,13 @@ function bysix(bytes, pxsize = 4, aprox = 1) {
     }
     const result = [];
     for (let c = 0; c < 256; c += 4)
-        if (map[c]) {
-            const bytes = new Color();
-            bytes[0] = map[c + 1] / map[c];
-            bytes[1] = map[c + 2] / map[c];
-            bytes[2] = map[c + 3] / map[c];
-            result.push({ code: c >> 2, bytes, area: map[c] / tot });
-        };
+        if (map[c]) result.push({
+            bytes: new Color(
+                map[c + 1] / map[c],
+                map[c + 2] / map[c],
+                map[c + 3] / map[c],
+            ),
+            area: map[c] / tot
+        });
     return result;
 }
