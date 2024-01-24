@@ -14,18 +14,18 @@ export default function Recommendations() {
 
     const USER = session.value.username;
 
-    const batchHandle = State.from(1);
-    const batchResponse = State.from({ current: 1, next: 2, previous: null });
+    const batchHandle = new State(1);
+    const batchResponse = new State({ current: 1, next: 2, previous: null });
 
-    const pageHandle = State.from(1);
-    const recoResponse = State.from({ current: 1, next: 2, previous: null });
+    const pageHandle = new State(1);
+    const recoResponse = new State({ current: 1, next: 2, previous: null });
 
-    const isSidebarOpen = State.from(isBigScreen());
+    const isSidebarOpen = new State(isBigScreen());
 
-    const recoUser = State.from({ null: true });
+    const recoUser = new State({ null: true });
 
-    const usersData = State.from(null);
-    const recommendationsData = State.from(null);
+    const usersData = new State(null);
+    const recommendationsData = new State(null);
 
     batchHandle.sub(async (batch) => {
         await updateUsers(batch);

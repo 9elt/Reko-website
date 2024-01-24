@@ -8,7 +8,7 @@ import { ENTRY_PH } from "./recommendations";
 
 const getncards = () => clamp(Math.floor(window.innerWidth / 250), 4);
 
-const ncards = State.from(getncards());
+const ncards = new State(getncards());
 window.onresize = () => {
     let n = getncards();
     if (n !== ncards.value)
@@ -16,7 +16,7 @@ window.onresize = () => {
 };
 
 export const Preview = () => {
-    const data = State.from(null);
+    const data = new State(null);
 
     if (session.value.username)
         reko(`/${session.value.username}/recommendations?page=1&batch=1`)

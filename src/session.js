@@ -33,7 +33,7 @@ session.logout = () => {
     storage_set(session.value);
 }
 
-session.saved = State.from(session.value.saved || []);
+session.saved = new State(session.value.saved || []);
 
 session.saved.sub(c => session.value.saved = c);
 

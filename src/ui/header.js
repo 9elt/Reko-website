@@ -7,7 +7,7 @@ import { LogOutIcon, SaveIcon } from './icons';
 import { Light } from './text';
 
 export const Header = (logo) => {
-    const openSaved = State.from(false);
+    const openSaved = new State(false);
     return M.div({
         className: 'header',
     },

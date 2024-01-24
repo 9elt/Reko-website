@@ -7,7 +7,7 @@ import { State } from "@9elt/miniframe";
  * 0       = api is offline
  * string  = api version
  */
-export const version = State.from(null);
+export const version = new State(null);
 
 /**
  * @type {State<string> & {
@@ -16,12 +16,12 @@ export const version = State.from(null);
 *     hydrate: () => void;
 * }}
 */
-export const router = State.from(window.location.pathname + window.location.hash);
+export const router = new State(window.location.pathname + window.location.hash);
 
 /**
  * @type {State<HTMLElement[]>}
  */
-export const root = State.from(document.querySelector('#root').childNodes);
+export const root = new State(document.querySelector('#root').childNodes);
 
 /**
  * @type {State<null | -1 | {
@@ -39,4 +39,4 @@ export const root = State.from(document.querySelector('#root').childNodes);
 * 0     = no session
 * {...} = valid session
 */
-export const session = State.from(null);
+export const session = new State(null);

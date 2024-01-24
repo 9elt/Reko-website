@@ -39,12 +39,12 @@ const BGCOLOR = new Color(9, 19, 29);
  * @param {boolean} preventLoading
  */
 export const Card = (user, entry, preventLoading) => {
-    const loading = State.from(true);
-    const hover = State.from(false);
-    const active = State.from(false);
+    const loading = new State(true);
+    const hover = new State(false);
+    const active = new State(false);
     const status = State.use({ loading, active });
 
-    const color = State.from(BGCOLOR);
+    const color = new State(BGCOLOR);
     const bgcolor = color.as(c => c.mix(BGCOLOR, 0.9));
 
     const load = () => loading.value = preventLoading;

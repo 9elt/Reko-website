@@ -4,9 +4,9 @@ import { join } from "../util";
 import { M } from ".";
 
 export const LoginForm = () => {
-    const loading = State.from(false);
-    const username = State.from('');
-    const error = State.from('');
+    const loading = new State(false);
+    const username = new State('');
+    const error = new State('');
     const status = State.use({ error, loading });
 
     const oninput = (e) => {
