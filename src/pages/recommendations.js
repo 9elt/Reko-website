@@ -10,7 +10,7 @@ export default function Recommendations() {
     if (!session.value)
         return session.value === null
             ? [M.div({ className: 'max-65 loading usr-ph', style: { marginTop: '64px' } })]
-            : [LoginForm()];
+            : [LoginForm({ style: { paddingTop: '48px' } })];
 
     const USER = session.value.username;
 

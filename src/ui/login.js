@@ -5,7 +5,7 @@ import { join } from "../util";
 import { LogOutIcon } from "./icons";
 import { RekoLogo } from "./logo";
 
-export const LoginForm = () => {
+export const LoginForm = (props) => {
     const loading = new State(false);
     const username = new State('');
     const error = new State('');
@@ -35,6 +35,7 @@ export const LoginForm = () => {
 
     return M.div({
         className: 'max-65 login-container',
+        ...props,
     },
         M.h2({},
             'Connect to find similar users!'
