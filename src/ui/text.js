@@ -21,15 +21,22 @@ export const Light = (...children) => M.span({
     children,
 });
 
-export const ResCode = (code, msg) => M.b({},
+export const SubTitle = (...children) => M.h5({
+    className: 'sub-title',
+    children,
+});
+
+export const ResCode = (code, msg) => M.b({
+    className: 'res-code',
+},
     M.span({
         className: code < 300 ? 'green' : 'red',
     },
         code
     ),
     ...(typeof msg === 'string' ? [msg] : msg).map(message =>
-        M.pre({
-            className: 'inline',
+        M.span({
+            className: 'inline-pre',
         },
             message
         )

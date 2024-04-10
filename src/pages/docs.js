@@ -1,6 +1,6 @@
 import { Link } from '../ui';
 import { TypeScript, JavaScript } from '../ui/macros' assert { type: 'macro' };
-import { Block, Light, Param, ReqMethod, ResCode, TextSection } from '../ui/text';
+import { Block, Light, Param, ReqMethod, ResCode, TextSection, SubTitle } from '../ui/text';
 import { M } from '../ui';
 
 export default function Docs() {
@@ -23,16 +23,24 @@ export default function Docs() {
                 ),
                 M.p({},
                     'Reko API is online at ',
-                    M.pre({ className: 'inline' }, 'https://api.reko.moe'),
+                    M.span({ className: 'inline-pre' }, 'https://api.reko.moe'),
                     ', you can check the server status and api version at ',
-                    M.pre({ className: 'inline' }, '/version'),
+                    Link(
+                        'https://api.reko.moe/version',
+                        M.span({ className: 'inline-pre' }, '/version'),
+                    ),
                     '.'
                 ),
                 M.p({},
                     'For any doubts or issues you can ',
                     Link(
                         'https://myanimelist.net/profile/_nelt',
-                        'contact the developer.'
+                        'contact the developer,'
+                    ),
+                    ' or refer to ',
+                    Link(
+                        'https://myanimelist.net/forum/?topicid=2075707',
+                        'this MyAnimeList post.'
                     )
                 )
             ),
@@ -66,7 +74,7 @@ export default function Docs() {
             ),
             Block('generic-errors',
                 M.h3({}, 'Errors'),
-                M.p({}, 'Common errors ', M.pre({ className: 'inline' }, 'text/plain')),
+                M.p({}, 'Common errors ', M.span({ className: 'inline-pre' }, 'text/plain')),
                 M.p({}, ResCode(404, 'Resource does not exist')),
                 M.p({}, ResCode(405, 'Invalid request method')),
                 M.p({}, ResCode(503, 'Rate limited')),
@@ -83,7 +91,7 @@ export default function Docs() {
                 | }`, 'typescript'),
                 M.p({},
                     'Common handled errors ',
-                    M.pre({ className: 'inline' }, 'application/json'),
+                    M.span({ className: 'inline-pre' }, 'application/json'),
                     M.small({}, M.i({}, '(status | ids)')),
                     M.p({}, ResCode(403, 'PrivateUserList')),
                     M.p({}, ResCode(404, 'UserNotFound')),
@@ -119,7 +127,7 @@ export default function Docs() {
                     ),
                 ),
                 M.br,
-                M.h5({},
+                SubTitle(
                     'request example ',
                     M.small({}, M.i({}, '(javascript)')),
                 ),
@@ -131,7 +139,7 @@ export default function Docs() {
                 |     return await res.json();
                 | }`, 'javascript'),
                 M.br,
-                M.h5({}, 'responses'),
+                SubTitle('responses'),
                 ResCode(200, 'Success'),
                 TypeScript(`\
                 | {
@@ -173,19 +181,19 @@ export default function Docs() {
                     'The page number is clamped between 1 and 20, pages MAY NOT return data.',
                 )),
                 M.br,
-                M.h5({},
+                SubTitle(
                     'request example ',
                     M.small({}, M.i({}, '(javascript)')),
                 ),
                 JavaScript(`\
-                | async function recommendationsFrom(username, ohter, page = 1) {
+                | async function recommendationsFrom(username, other, page = 1) {
                 |     const res = await fetch(
                 |         \`https://api.reko.moe/\${username}/recommendations/\${other}?page=\${page}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
                 M.br,
-                M.h5({}, 'responses'),
+                SubTitle('responses'),
                 ResCode(200, 'Success'),
                 TypeScript(`\
                 | {
@@ -221,7 +229,7 @@ export default function Docs() {
                     'The page number is clamped between 1 and 40, all pages return data.',
                 )),
                 M.br,
-                M.h5({},
+                SubTitle(
                     'request example ',
                     M.small({}, M.i({}, '(javascript)')),
                 ),
@@ -233,7 +241,7 @@ export default function Docs() {
                 |     return await res.json();
                 | }`, 'javascript'),
                 M.br,
-                M.h5({}, 'responses'),
+                SubTitle('responses'),
                 ResCode(200, 'Success'),
                 TypeScript(`\
                 | {
@@ -253,7 +261,7 @@ export default function Docs() {
                 M.br,
                 M.pre({}, '/{username}/compare/{other}'),
                 M.br,
-                M.h5({},
+                SubTitle(
                     'request example ',
                     M.small({}, M.i({}, '(javascript)')),
                 ),
@@ -265,7 +273,7 @@ export default function Docs() {
                 |     return await res.json();
                 | }`, 'javascript'),
                 M.br,
-                M.h5({}, 'responses'),
+                SubTitle('responses'),
                 ResCode(200, 'Success'),
                 TypeScript(`\
                 | {

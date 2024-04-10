@@ -40,7 +40,8 @@
     font-size: 1rem;
 }
 
-.text-section pre {
+.text-section pre,
+.text-section .inline-pre {
     background-color: #0003;
     font-size: 1rem;
     padding: 1rem;
@@ -52,10 +53,15 @@
     padding: 0rem;
 }
 
-.text-section pre.inline {
-    padding: .2rem;
-    margin: 0;
+.text-section pre.inline,
+.text-section .inline-pre {
+    padding: 4px 8px;
+    margin: 0 2px;
     display: inline;
+}
+
+.text-section .inline-pre {
+    font-family: monospace;
 }
 
 .text-section span.red,
@@ -76,4 +82,13 @@
 
 .text-section small {
     opacity: .9;
+}
+
+.text-section .sub-title {
+    margin-block: 8px;
+}
+
+.text-section .res-code {
+    display: inline-block;
+    margin-block: 8px;
 }
