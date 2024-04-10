@@ -77,6 +77,6 @@ const SavedRecoHeading = (saved) => M.div({
 const NoSavedReco = () => M.div({
     className: 'heading',
 },
-    M.h3({}, 'You don\'t have saved recommendations'),
-    M.p({}, 'Click on the save icon to save them')
+    M.h3({}, 'You didn\'t save any recommendations'),
+    M.p({}, 'Click on the save icon, they will appear here.')
 );
