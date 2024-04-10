@@ -65,6 +65,10 @@ svg.yellow {
     fill: #ffc486;
 }
 
+svg.blue {
+    fill: #5dbfff;
+}
+
 svg.orange {
     fill: #ffa45e;
 }

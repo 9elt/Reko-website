@@ -8,15 +8,23 @@
 }
 
 .login {
-    background-color: #09131d88;
+    position: relative;
+    overflow: hidden;
     padding: 32px;
     padding-top: 18px;
     border-radius: 4px;
-}
-
-.login {
     display: block;
     color: #eee;
+}
+
+.login-background {
+    width: 119px;
+    position: absolute;
+    bottom: -19px;
+    right: 0;
+    fill: #09131da0;
+    outline: #09131da0 800px solid;
+    z-index: -1;
 }
 
 .login.error label {
@@ -25,6 +33,27 @@
 
 .login label {
     font-size: 18px;
+}
+
+.login .winput-wrapper {
+    display: flex;
+    width: calc(100% - 80px);
+}
+
+@media only screen and (max-width: 600px) {
+    .login-background {
+        width: 92px;
+        bottom: -8px;
+        top: auto;
+    }
+
+    .login .winput-wrapper {
+        width: calc(100% - 41px);
+    }
+}
+
+.login .winput-wrapper> button {
+    width: 32px;
 }
 
 .login .winput>input {
@@ -46,6 +75,7 @@
 
 .login .winput {
     position: relative;
+    width: 100%;
 }
 
 .login.wloading .winput::before {

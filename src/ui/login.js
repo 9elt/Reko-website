@@ -1,7 +1,9 @@
-import { State } from "@9elt/miniframe"
+import { State } from "@9elt/miniframe";
+import { M } from ".";
 import { router, session } from "../global";
 import { join } from "../util";
-import { M } from ".";
+import { LogOutIcon } from "./icons";
+import { RekoLogo } from "./logo";
 
 export const LoginForm = () => {
     const loading = new State(false);
@@ -45,7 +47,12 @@ export const LoginForm = () => {
                 l && 'wloading',
             )),
         },
-            M.p({}, 'Enter your MyAnimeList username, to find similar similar users and get recommendations'),
+            RekoLogo({
+                className: 'login-background',
+            }),
+            M.p({},
+                'Enter your MyAnimeList username, to find similar similar users and get recommendations'
+            ),
             M.br,
             M.label({
                 forHtml: 'mal-username',
@@ -55,15 +62,30 @@ export const LoginForm = () => {
                 )
             ),
             M.div({
-                className: 'winput',
+                className: 'winput-wrapper',
             },
-                M.input({
-                    id: 'mal-username',
-                    name: 'mal-username',
-                    type: 'text',
-                    value: username,
-                    oninput,
-                })
+                M.div({
+                    className: 'winput',
+                },
+                    M.input({
+                        id: 'mal-username',
+                        name: 'mal-username',
+                        type: 'text',
+                        value: username,
+                        oninput,
+                    })
+                ),
+                M.button({
+                    type: 'submit',
+                    disabled: status.as(({ error: e, loading: l }) => e || l),
+                },
+                    LogOutIcon({
+                        width: 32,
+                        className: error.as(err =>
+                            err ? 'red' : 'blue'
+                        ),
+                    }),
+                ),
             ),
         ),
     );
