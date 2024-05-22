@@ -53,6 +53,7 @@ export default function Docs() {
                 M.li({}, Link('#specific-user-recommendations', ReqMethod('GET'), ' Specific User Recommendations')),
                 M.li({}, Link('#similar-users', ReqMethod('GET'), ' Similar Users')),
                 M.li({}, Link('#compare-users', ReqMethod('GET'), ' Compare Users')),
+                M.li({}, Link('#random-recommendations', ReqMethod('GET'), ' Random Recommendations')),
             ),
             M.hr,
             Block('generic-responses',
