@@ -307,7 +307,7 @@ export default function Docs() {
                     JavaScript(`\
                 | async function randomRecommendations(username, batch = 1) {
                 |     const res = await fetch(
-                |         \`https://api.reko.moe/\${username}/recommendations?batch=\${batch}\`
+                |         \`https://api.reko.moe/\${username}/random?batch=\${batch}\`
                 |     );
                 |     return await res.json();
                 | }`, 'javascript'),
