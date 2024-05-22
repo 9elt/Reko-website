@@ -38,6 +38,15 @@ export default function Index() {
             M.h2({}, Light('Patch notes')),
             M.br,
             M.br,
+            M.h3({}, 'v0.5.0'),
+            M.p({},
+                'Added ',
+                Link(
+                    '/docs#random-recommendations',
+                    ReqMethod('GET'), ' Random Recommendations'
+                )
+            ),
+            M.br,
             M.h3({}, 'v0.4.1'),
             M.p({}, 'Recommendations ordering tweaks'),
             M.br,

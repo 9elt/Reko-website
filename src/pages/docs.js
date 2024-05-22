@@ -284,7 +284,60 @@ export default function Docs() {
                 |         similarity: number;
                 |     };
                 | }`, 'typescript'),
-            ),
+                Block('random-recommendations',
+                    M.h3({}, ReqMethod('GET'), ' Random Recommendations'),
+                    M.p({}, 'Get random anime recommendations from the lists of the most similar users.'),
+                    M.pre({}, '/{username}/random?batch={1-40}'),
+                    M.br,
+                    M.small({}, 'query parameters'),
+                    M.ul({},
+                        Param(
+                            'batch',
+                            'number',
+                            'decides the similar users batch',
+                            true,
+                            'The page number is clamped between 1 and 40, all pages return data.',
+                        ),
+                    ),
+                    M.br,
+                    SubTitle(
+                        'request example ',
+                        M.small({}, M.i({}, '(javascript)')),
+                    ),
+                    JavaScript(`\
+                | async function randomRecommendations(username, batch = 1) {
+                |     const res = await fetch(
+                |         \`https://api.reko.moe/\${username}/recommendations?batch=\${batch}\`
+                |     );
+                |     return await res.json();
+                | }`, 'javascript'),
+                    M.br,
+                    SubTitle('responses'),
+                    ResCode(200, 'Success'),
+                    TypeScript(`\
+                | {
+                |     requester: { ... };
+                |     data: Array<{
+                |         id: number;
+                |         score: number;
+                |         details: {
+                |             title: string;
+                |             mean: number;
+                |             airing_date: string | null;
+                |             length: number | null;
+                |             rating: string | null;
+                |             picture: string | null;
+                |             genres: Array<string>;
+                |         };
+                |         users: Array<{
+                |             score: number;
+                |             username: string;
+                |             hash: string;
+                |             similarity: number;
+                |         }>;
+                |     }>;
+                | }`, 'typescript'),
+                ),),
         ),
     )];
 }
