@@ -52,7 +52,7 @@ export const LoginForm = (props) => {
                 className: 'login-background',
             }),
             M.p({},
-                'Enter your MyAnimeList username, to find similar similar users and get recommendations'
+                'Enter your MyAnimeList username, to find similar users and get recommendations'
             ),
             M.br,
             M.label({
