@@ -20,6 +20,7 @@
     justify-content: center;
     overflow: hidden;
     transition: all 80ms ease-in-out;
+    position: relative;
 }
 
 .card:hover>.img {
@@ -64,6 +65,12 @@
     pointer-events: none;
     flex-shrink: 0;
     transition: opacity 100ms ease-in-out;
+    position: relative;
+}
+
+.card>.img>img.filler {
+    position: absolute;
+    filter: blur(32px);
 }
 
 .card.active.complete .data {

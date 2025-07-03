@@ -60,8 +60,20 @@ export const Card = (user, entry, preventLoading) => {
             load();
             color.value = getImageColor(img);
             const ar = img.height / img.width;
-            if (ar < ASPECT_RATIO && ar > MAX_ASPECT_RATIO)
+            if (ar < ASPECT_RATIO && ar > MAX_ASPECT_RATIO) {
                 img.style.width = Math.ceil(100 * ASPECT_RATIO / ar) + '%';
+            }
+            if (ar > ASPECT_RATIO) {
+                img.style.width = Math.ceil(100 * ar / ASPECT_RATIO) + '%';
+            }
+            if (ar < 1) {
+                const fillerImg = document.createElement('img');
+                fillerImg.crossOrigin = 'anonymous';
+                fillerImg.className = "filler";
+                fillerImg.style.width = Math.ceil(100 * ASPECT_RATIO / ar) + '%';
+                fillerImg.src = img.src;
+                img.parentElement.prepend(fillerImg);
+            }
             img.style.opacity = 1;
         };
         img.onerror = load;
