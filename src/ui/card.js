@@ -5,7 +5,7 @@ import { Color, getImageColor, isGPU, join, limit } from "../util";
 import { LinkIcon, SaveIcon, TrashIcon } from "./icons";
 
 const ASPECT_RATIO = 319 / 225;
-const MAX_ASPECT_RATIO = 319 / 260;
+const MIN_ASPECT_RATIO = 319 / 260;
 const BGCOLOR = new Color(9, 19, 29);
 
 /**
@@ -60,13 +60,13 @@ export const Card = (user, entry, preventLoading) => {
             load();
             color.value = getImageColor(img);
             const ar = img.height / img.width;
-            if (ar < ASPECT_RATIO && ar > MAX_ASPECT_RATIO) {
+            if (ar < ASPECT_RATIO && ar > MIN_ASPECT_RATIO) {
                 img.style.width = Math.ceil(100 * ASPECT_RATIO / ar) + '%';
             }
             if (ar > ASPECT_RATIO) {
                 img.style.width = Math.ceil(100 * ar / ASPECT_RATIO) + '%';
             }
-            if (ar < 1) {
+            if (ar <= MIN_ASPECT_RATIO) {
                 const fillerImg = document.createElement('img');
                 fillerImg.crossOrigin = 'anonymous';
                 fillerImg.className = "filler";
