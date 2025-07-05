@@ -73,6 +73,11 @@
     filter: blur(32px);
 }
 
+.data {
+    position: relative;
+    z-index: 1;
+}
+
 .card.active.complete .data {
     overflow-y: scroll;
     height: 100%;

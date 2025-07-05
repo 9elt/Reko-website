@@ -105,7 +105,7 @@ export const Card = (user, entry, preventLoading) => {
                 loading && 'loading',
             )),
             style: {
-                boxShadow: isGPU && color.as(c => '0 16px 64px 8px ' + c.opacity(0.1))
+                boxShadow: isGPU && color.as(c => '0 16px 64px 8px ' + c.opacity(0.2))
             }
         },
             img,

@@ -135,8 +135,13 @@ export function getImageColor(img) {
     try {
         canvas.drawImage(img, 0, 0);
         const bytes = canvas.getImageData(0, 0, img.width, img.height).data;
-        const color = bysix(bytes, 4, 4).sort((a, b) => b.area - a.area)[0];
-
+        const colors = by4(bytes, 4, 4)
+            .sort((a, b) => b.area - a.area);
+        const color = colors.find((color) =>
+            color.code !== 0 && color.code !== 7 && color.area >= 0.01
+        ) || colors.find((color) =>
+            color.code !== 0
+        ) || colors[0];
         return COLORS_CACHE.set(img.src, color.bytes);
     }
     catch {
@@ -144,30 +149,66 @@ export function getImageColor(img) {
     }
 }
 
-function bysix(bytes, pxsize = 4, aprox = 1) {
-    const inc = pxsize * aprox;
-    const len = bytes.length / inc;
-    const tot = len / inc;
-    const map = new Uint32Array(256).fill(0);
-    for (let i = 0; i < len; i += inc) {
+function by4(
+    bytes,
+    pxsize = 4,
+    aprox = Math.ceil(bytes.length / 4147200)
+) {
+    const pxincr = pxsize * aprox;
+    const samples = bytes.length / pxincr;
+
+    // NOTE: 16 * (count, red, green, blue)
+    const map = new Uint32Array(64).fill(0);
+
+    for (let i = 0; i < bytes.length; i += pxincr) {
         const r = bytes[i];
         const g = bytes[i + 1];
         const b = bytes[i + 2];
-        const c = ((b >> 6) + ((g >> 6) << 2) + ((r >> 6) << 4)) << 2;
-        map[c]++;
-        map[c + 1] += r;
-        map[c + 2] += g;
-        map[c + 3] += b;
+
+        // NOTE: second most relevant bits of each channel
+        const n2relev = (b + (g << 8) + (r << 16)) & 4210752;
+
+        const map_i =
+            // NOTE: the 4-bit color id is composed by
+            // 1-bit "plus" flag + 3-bit color representation
+            (
+                // NOTE: the "plus" flag is 1 when at least two
+                // of the second most relevant bits are 1
+                (n2relev & (n2relev - 1) ? 8 : 0)
+                // NOTE: the 3-bit color representation
+                + (b >> 7) + ((g >> 7) << 1) + ((r >> 7) << 2)
+            )
+            // NOTE: the map index is the 4-bit color id * 4
+            * 4;
+
+        map[map_i]++;
+        map[map_i + 1] += r;
+        map[map_i + 2] += g;
+        map[map_i + 3] += b;
     }
+
     const result = [];
-    for (let c = 0; c < 256; c += 4)
-        if (map[c]) result.push({
-            bytes: new Color(
-                map[c + 1] / map[c],
-                map[c + 2] / map[c],
-                map[c + 3] / map[c],
-            ),
-            area: map[c] / tot
-        });
+
+    for (let map_i = 0; map_i < 64; map_i += 4) {
+        const count = map[map_i];
+
+        if (count > 0) {
+            const bytes = new Color();
+
+            bytes[0] = map[map_i + 1] / count;
+            bytes[1] = map[map_i + 2] / count;
+            bytes[2] = map[map_i + 3] / count;
+
+            const id = map_i >> 2;
+
+            result.push({
+                id,
+                code: id & 7,
+                area: count / samples,
+                bytes,
+            });
+        }
+    }
+
     return result;
 }
