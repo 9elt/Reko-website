@@ -78,7 +78,8 @@ export const Card = (user, entry, preventLoading) => {
         };
         img.onerror = load;
         img.alt = entry.details.title;
-        img.src = entry.details.picture;
+        img.src = entry.details.picture
+            .replace("https://myanimelist.net", "https://cdn.myanimelist.net");
     }
 
     return M.div({
